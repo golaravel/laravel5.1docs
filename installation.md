@@ -1,87 +1,87 @@
-# Installation
+# 安装
 
-- [Installation](#installation)
-- [Configuration](#configuration)
-	- [Basic Configuration](#basic-configuration)
-	- [Environment Configuration](#environment-configuration)
+- [Installation](#安装)
+- [Configuration](#设置)
+	- [基本设置](#basic-configuration)
+	- [环境设置](#environment-configuration)
 	- [Configuration Caching](#configuration-caching)
-	- [Accessing Configuration Values](#accessing-configuration-values)
-	- [Naming Your Application](#naming-your-application)
-- [Maintenance Mode](#maintenance-mode)
+	- [访问配置值](#accessing-configuration-values)
+	- [为应用命名](#naming-your-application)
+- [维护模式](#maintenance-mode)
 
 <a name="installation"></a>
-## Installation
+## 安装
 
-### Server Requirements
+### 运行环境需求
 
-The Laravel framework has a few system requirements. Of course, all of these requirements are satisfied by the [Laravel Homestead](/docs/{{version}}/homestead) virtual machine:
+Laravel 框架对系统环境有一些要求。当然，所有这些要求在 [Laravel Homestead](/docs/{{version}}/homestead) 虚拟机中都是预装好的：
 
 <div class="content-list" markdown="1">
 - PHP >= 5.5.9
-- OpenSSL PHP Extension
-- Mbstring PHP Extension
-- Tokenizer PHP Extension
+- OpenSSL PHP 扩展
+- Mbstring PHP 扩展
+- Tokenizer PHP 扩展
 </div>
 
 <a name="install-laravel"></a>
-### Installing Laravel
+### 安装 Laravel
 
-Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. So, before using Laravel, make sure you have Composer installed on your machine.
+Laravel 利用 [Composer](http://getcomposer.org) 来管理其自身的依赖包。因此，在使用 Laravel 之前，请务必确保在你的机器上已经安装了 Composer 。
 
-#### Via Laravel Installer
+#### 通过 Laravel 安装工具安装 Laravel
 
-First, download the Laravel installer using Composer:
+首先，使用 Composer 下载 Laravel 安装包：
 
 	composer global require "laravel/installer=~1.1"
 
-Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `laravel` executable can be located by your system.
+请确保将 `~/.composer/vendor/bin` 目录设置于你的 `PATH` 环境变量里， 这样 `laravel` 执行文件就就能被你的系统检测到了。
 
-Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` will create a directory named `blog` containing a fresh Laravel installation with all of Laravel's dependencies already installed. This method of installation is much faster than installing via Composer:
+一旦安装完成后，就可以使用 `laravel new` 命令在你指定的目录中建立一份全新安装的 `Laravel` 应用。例如： `laravel new blog` 命令会在当前目录下建立一个名为 `blog` 的目录， 此目录里面存放着全新的 Laravel ，并且所有依赖包也已经安装好了。此方法的安装速度会比通过 Composer 安装快很多。
 
 	laravel new blog
 
-#### Via Composer Create-Project
+#### 通过 Composer Create-Project 命令安装 Laravel
 
-You may also install Laravel by issuing the Composer `create-project` command in your terminal:
+还可以通过 Composer 的 `create-project` 命令来安装 Laravel：
 
 	composer create-project laravel/laravel --prefer-dist
 
 <a name="configuration"></a>
-## Configuration
+## 配置
 
 <a name="basic-configuration"></a>
-### Basic Configuration
+### 基本配置
 
-All of the configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+Laravel 框架所用的所有配置文件都被存放在 `config` 目录下。每个配置项都有文档说明，所以请通读所有配置文件以熟悉所有可用的配置项。
 
-#### Directory Permissions
+#### 目录权限
 
-After installing Laravel, you may need to configure some permissions. Directories within the `storage` and the `bootstrap/cache` directories should be writable by your web server. If you are using the [Homestead](/docs/{{version}}/homestead) virtual machine, these permissions should already be set.
+安装 Laravel 之后，可能需要你配置一下目录权限。web 服务器需要拥有 `storage` 目录下的所有目录和 `bootstrap/cache` 目录的写权限。如果你在使用 [Homestead](/docs/{{version}}/homestead) 虚拟机，这些权限都已经帮你设置好了。
 
 #### Application Key
 
-The next thing you should do after installing Laravel is set your application key to a random string. If you installed Laravel via Composer or the Laravel installer, this key has already been set for you by the `key:generate` command. Typically, this string should be 32 characters long. The key can be set in the `.env` environment file. If you have not renamed the `.env.example` file to `.env`, you should do that now. **If the application key is not set, your user sessions and other encrypted data will not be secure!**
+安装 Laravel 之后接下来需要做的就是设置一个随机字串作为应用的 key。如果你是通过 Composer 或 Laravel 安装器安装的 Laravel，这个 key 已经由 `key:generate` 命令自动生成并设置了。一般情况下，这个作为 key 的字串的长度是 32 个字符。这个 key 还可以在 `.env` 环境配置文件中设置。如果你没有将 `.env.example` 文件改名为 `.env`，那就现在就做吧。**如果应用的 key 没有被配置，会话和其他需要加密的数据将不安全！**
 
-#### Additional Configuration
+#### 额外的配置
 
-Laravel needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
+Laravel 开箱即用，几乎不需要什么配置。现在就可以开始你的开发之旅了！不过，建议你浏览一下 `config/app.php` 文件和此文件中的文档。它包含了几个配置项，例如 `timezone` 和 `locale` ，可能需要根据你自身的情况稍作修改。
 
-You may also want to configure a few additional components of Laravel, such as:
+你可能还需要为 Laravel 中的几个组件做些配置，例如：
 
-- [Cache](/docs/{{version}}/cache#configuration)
-- [Database](/docs/{{version}}/database#configuration)
-- [Session](/docs/{{version}}/session#configuration)
+- [缓存](/docs/{{version}}/cache#configuration)
+- [数据库](/docs/{{version}}/database#configuration)
+- [会话](/docs/{{version}}/session#configuration)
 
-Once Laravel is installed, you should also [configure your local environment](/docs/{{version}}/installation#environment-configuration).
+完成 Laravel 安装后，建议阅读 [配置你的本地开发环境](/docs/{{version}}/installation#environment-configuration).
 
-<a name="pretty-urls"></a>
-#### Pretty URLs
+<a name="pretty-urls"></a> 章节。
+#### 美化链接
 
 **Apache**
 
-The framework ships with a `public/.htaccess` file that is used to allow URLs without `index.php`. If you use Apache to serve your Laravel application, be sure to enable the `mod_rewrite` module.
+Laravel 框架自带了 `public/.htaccess` 文件用来从网址中删除 `index.php`。如果你用的是 Apache 来运行你的 Laravel 应用，请务必启用 Apache 的 `mod_rewrite` 模块。
 
-If the `.htaccess` file that ships with Laravel does not work with your Apache installation, try this one:
+如果 Laravel 自带的 `.htaccess` 文件在你的 Apache 中不起作用，请试一试下面的配置：
 
 	Options +FollowSymLinks
 	RewriteEngine On
@@ -92,16 +92,16 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 
 **Nginx**
 
-On Nginx, the following directive in your site configuration will allow "pretty" URLs:
+在 Nginx 中，将下面的指令放到站点配置文件中就可以实现美化链接的功能：
 
 	location / {
 		try_files $uri $uri/ /index.php?$query_string;
 	}
 
-Of course, when using [Homestead](/docs/{{version}}/homestead), pretty URLs will be configured automatically.
+当然，如果你用的是 [Homestead](/docs/{{version}}/homestead)，美化链接的功能已经被自动配置好了。
 
 <a name="environment-configuration"></a>
-### Environment Configuration
+### 环境配置
 
 It is often helpful to have different configuration values based on the environment the application is running in. For example, you may wish to use a different cache driver locally than you do on your production server. It's easy using environment based configuration.
 
@@ -163,7 +163,7 @@ For example, if your application is named "Horsefly", you could run the followin
 Renaming your application is entirely optional, and you are free to keep the `App` namespace if you wish.
 
 <a name="maintenance-mode"></a>
-## Maintenance Mode
+## 维护模式
 
 When your application is in maintenance mode, a custom view will be displayed for all requests into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenance mode check is included in the default middleware stack for your application. If the application is in maintenance mode, an `HttpException` will be thrown with a status code of 503.
 
