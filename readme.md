@@ -14,5 +14,5 @@
 
 - [x] installation.md
 - [x] encryption.md
-- [] blade.md
-- [] structure.md
+- [ ] blade.md
+- [ ] structure.md
