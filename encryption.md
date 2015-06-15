@@ -1,21 +1,21 @@
-# Encryption
+# 加密
 
-- [Configuration](#configuration)
-- [Basic Usage](#basic-usage)
+- [设置](#configuration)
+- [基本用法](#basic-usage)
 
 <a name="configuration"></a>
-## Configuration
+## 设置
 
-Before using Laravel's encrypter, you should set the `key` option of your `config/app.php` configuration file to a 32 character, random string. If this value is not properly set, all values encrypted by Laravel will be insecure.
+在使用 Laravel 的加密功能前，你需要先为 `config/app.php` 配置文件中的 `key` 参数设置一个值，这个值是一个包含 32 个随机字符的字符串。如果这个值没有正确设置，所有由 Laravel 加密的数据都是不安全的。
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-#### Encrypting A Value
+#### 加密
 
-You may encrypt a value using the `Crypt` [facade](/docs/{{version}}/facades). All encrypted values are encrypted using the OpenSSL and the `AES-256-CBC` cipher. Furthermore, all encrypted values are signed with a message authentication code (MAC) to detect any modifications to the encrypted string.
+通过 `Crypt` [facade](/docs/{{version}}/facades) 可以加密一段数据。所有加密都行为采用都是 OpenSSL 和 `AES-256-CBC` cipher。并且，所有加密过的数据都会被赋予一个“信息验证码”（MAC），以防被加密后所得到的字符串被篡改。
 
-For example, we may use the `encrypt` method to encrypt a secret and store it on an [Eloquent model](/docs/{{version}}/eloquent):
+如下例，我们使用 `encrypt` 方法将加密过的数据存入 [Eloquent model](/docs/{{version}}/eloquent)：
 
 	<?php
 
@@ -28,7 +28,7 @@ For example, we may use the `encrypt` method to encrypt a secret and store it on
 	class UserController extends Controller
 	{
 		/**
-		 * Store a secret message for the user.
+		 * 为用户保存一段私密信息
 		 *
 		 * @param  Request  $request
 		 * @param  int  $id
@@ -44,9 +44,9 @@ For example, we may use the `encrypt` method to encrypt a secret and store it on
 		}
 	}
 
-#### Decrypting A Value
+#### 解密
 
-Of course, you may decrypt values using the `decrypt` method on the `Crypt` facade. If the value can not be properly decrypted, such as when the MAC is invalid, an `Illuminate\Contracts\Encryption\DecryptException` will be thrown:
+当然，你可以使用 `Crypt` 中的 `decrypt` 方法进行解密。如果解密失败，例如 MAC 被篡改了，将会抛出 `Illuminate\Contracts\Encryption\DecryptException` 异常：
 
 	use Illuminate\Contracts\Encryption\DecryptException;
 
