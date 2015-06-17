@@ -13,7 +13,7 @@
 
 #### 加密
 
-通过 `Crypt` [facade](/docs/{{version}}/facades) 可以加密一段数据。所有加密都行为采用都是 OpenSSL 和 `AES-256-CBC` cipher。并且，所有加密过的数据都会被赋予一个“信息验证码”（MAC），以防被加密后所得到的字符串被篡改。
+通过 `Crypt` [facade](/docs/{{version}}/facades) 可以加密一段数据。所有加密采用的都是 OpenSSL 和 `AES-256-CBC` cipher。并且，所有加密过的数据都会被赋予一个“信息验证码”（MAC），以防被加密后所得到的字符串被篡改。
 
 如下例，我们使用 `encrypt` 方法将加密过的数据存入 [Eloquent model](/docs/{{version}}/eloquent)：
 

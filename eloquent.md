@@ -41,7 +41,7 @@ If you would like to generate a [database migration](/docs/{{version}}/schema#da
 <a name="eloquent-model-conventions"></a>
 ### Eloquent Model Conventions
 
-Now, let's look at an example `Flight` model class, which will use to retrieve and store information from our `flights` database table:
+Now, let's look at an example `Flight` model class, which we will use to retrieve and store information from our `flights` database table:
 
 	<?php
 
@@ -358,7 +358,7 @@ In the example above, we are retrieving the model from the database before calli
 
 Of course, you may also run a delete query on a set of models. In this example, we will delete all flights that are marked as inactive:
 
-	$deletedRows = App\Flight::where('votes', '>', 100)->delete();
+	$deletedRows = App\Flight::where('active', 0)->delete();
 
 <a name="soft-deleting"></a>
 ### Soft Deleting
