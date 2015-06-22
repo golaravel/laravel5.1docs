@@ -1,7 +1,7 @@
-# Eloquent: Getting Started
+# Eloquent：入门
 
-- [Introduction](#introduction)
-- [Defining Models](#defining-models)
+- [简介](#introduction)
+- [定义模型（model）](#defining-models)
 	- [Eloquent Model Conventions](#eloquent-model-conventions)
 - [Retrieving Multiple Models](#retrieving-multiple-models)
 - [Retrieving Single Models / Aggregates](#retrieving-single-models)
@@ -17,31 +17,31 @@
 - [Events](#events)
 
 <a name="introduction"></a>
-## Introduction
+## 简介
 
-The Eloquent ORM included with Laravel provides a beautiful, simple ActiveRecord implementation for working with your database. Each database table has a corresponding "Model" which is used to interact with that table. Models allow you to query for data in your tables, as well as insert new records into the table.
+Laravel 所自带的 Eloquent ORM 是一个优美、简洁的 ActiveRecord 实现，用来实现数据库操作。每个数据表都有一个与之相对应的“模型（Model）”，用于和数据表交互。模型（model）帮助你在数据表中查询数据，以及向数据表内插入新的记录. 
 
-Before getting started, be sure to configure a database connection in `config/database.php`. For more information on configuring your database, check out [the documentation](/docs/{{version}}/database#configuration).
+在开始之前，请务必在 `config/database.php` 文件中正确配置数据库的连接参数。如需更多数据库配置方面的信息，请查看[此文档](/docs/{{version}}/database#configuration)。
 
 <a name="defining-models"></a>
-## Defining Models
+## 定义模型（model）
 
-To get started, let's create an Eloquent model. Models typically live in the `app` directory, but you are free to place them anywhere that can be auto-loaded according to your `composer.json` file. All Eloquent models extend `Illuminate\Database\Eloquent\Model` class.
+开始讲解前，我们先来创建一个 Eloquent 模型（model）。模型（model）文件通常被放在 `app` 目录下，但是，你也可以将其放置于任何地方，只要能够通过 `composer.json` 配置文件自动加载即可。所有的 Eloquent 模型（model）都继承自 `Illuminate\Database\Eloquent\Model` 类。
 
-The easiest way to create a model instance is using the `make:model` [Artisan command](/docs/{{version}}/artisan):
+创建一个模型（model）实例的最简单方法是使用 [Artisan 命令行工具](/docs/{{version}}/artisan) 的 `make:model` 指令：
 
 	php artisan make:model User
 
-If you would like to generate a [database migration](/docs/{{version}}/schema#database-migrations) when you generate the model, you may use the `--migration` or `-m` option:
+如果你希望在生成模型（model）的同时生成 [数据库将迁移](/docs/{{version}}/schema#database-migrations) ，可以通过添加 `--migration` 或 `-m` 参数来实现：
 
 	php artisan make:model User --migration
 
 	php artisan make:model User -m
 
 <a name="eloquent-model-conventions"></a>
-### Eloquent Model Conventions
+### Eloquent 模型规范
 
-Now, let's look at an example `Flight` model class, which we will use to retrieve and store information from our `flights` database table:
+现在，让我们来看一个 `Flight` 模型类（model class），我们用它从 `flights` 数据表中存取信息：
 
 	<?php
 
@@ -55,9 +55,9 @@ Now, let's look at an example `Flight` model class, which we will use to retriev
 	}
 
 
-#### Table Names
+#### 数据表的表名
 
-Note that we did not tell Eloquent which table to use for our `Flight` model. The "snake case", plural name of the class will be used as the table name unless another name is explicitly specified. So, in this case, Eloquent will assume the `Flight` model stores records in the `flights` table. You may specify a custom table by defining a `table` property on your model:
+注意，我们并没有告诉 Eloquent 将 `Flight` 模型（model）和哪个数据表进行关联。默认的规则是：类名的复数形式用来当做数据表的表名，除非明确指定另一个名称。所以，在这种情况下，Eloquent 将自动推导出 `Flight` 模型与 `flights` 数据表关联。你可以在模型（model）中定义一个 `table` 属性，用来指定另一个数据表名称：
 
 	<?php
 
@@ -75,13 +75,14 @@ Note that we did not tell Eloquent which table to use for our `Flight` model. Th
 		protected $table = 'my_flights';
 	}
 
-#### Primary Keys
+#### 主键
 
 Eloquent will also assume that each table has a primary key column named `id`. You may define a `$primaryKey` property to override this convention.
+Eloquent 假定每一个数据表中都存在一个命名为 `id` 的列作为主键。你可以通过定义一个 `$primaryKey` 属性来明确指定一个主键。
 
-#### Timestamps
+#### 时间戳
 
-By default, Eloquent expects `created_at` and `updated_at` columns to exist on your tables.  If you do not wish to have these columns automatically managed by Eloquent, set the `$timestamps` property on your model to `false`:
+默认情况下，Eloquent 期望数据表中存在 `created_at` 和 `updated_at` 字段。如果你不希望由 Eloquent 来管理这两个字段，可以在模型（model）中将 `$timestamps` 属性设置为 `false`：
 
 	<?php
 
@@ -99,7 +100,7 @@ By default, Eloquent expects `created_at` and `updated_at` columns to exist on y
 		public $timestamps = false;
 	}
 
-If you need to customize the format of your timestamps, set the `$dateFormat` property on your model. This property determines how date attributes are stored in the database, as well as their format when the model is serialized to an array or JSON:
+如果你需要定制时间戳的格式，可以通过在模型（model）中设置 `$dateFormat` 属性来实现。这个属性决定了日期属性如何在数据库中存储，也决定当模型（model）被序列化为数组 或者 JSON 格式时日期属性的格式：
 
 	<?php
 
@@ -118,9 +119,9 @@ If you need to customize the format of your timestamps, set the `$dateFormat` pr
 	}
 
 <a name="retrieving-multiple-models"></a>
-## Retrieving Multiple Models
+## 获取多个模型
 
-Once you have created a model and [its associated database table](/docs/{{version}}/schema), you are ready to start retrieving data from your database. Think of each Eloquent model as a powerful [query builder](/docs/{{version}}/queries) allowing you to fluently query the database table associated with the model. For example:
+一旦你创建了一个模型（model）并将其[关联到了一个数据表](/docs/{{version}}/schema)，你就可以从数据库中获取数据了。将每一个 Eloquent 模型（model）想象为一个强大的[查询构造器](/docs/{{version}}/queries)，该查询构造器能够帮你通过模型（model）从数据库中查询需要的数据。例如：
 
 	<?php
 
@@ -144,9 +145,9 @@ Once you have created a model and [its associated database table](/docs/{{versio
 		}
 	}
 
-#### Accessing Column Values
+#### 获取字段的值
 
-If you have an Eloquent model instance, you may access the column values of the model by accessing the corresponding property. For example, let's loop through each `Flight` instance returned by our query and echo the value of the `name` column:
+对于任何一个 Eloquent 模型（model）实例，都可以将字段名当做模型（model）的属性，从而相对应的属性来获取对应的字段的 值，例如，我们将查询之后获得的所有 `Flight` 实例挨个遍历，并且输出每个实例的 `name` 字段的值:
 
 	foreach ($flights as $flight) {
 		echo $flight->name;
@@ -221,9 +222,9 @@ Of course, you may also use the query builder aggregate functions such as `count
 ## Inserting & Updating Models
 
 <a name="basic-inserts"></a>
-### Basic Inserts
+### 基本的插入操作
 
-To create a new record in the database, simply create a new model instance, set attributes on the model, then call the `save` method:
+如需在数据库中新建一条记录，只要简单地新建一个模型（model）实例，然后为此实例设置属性，最后调用 `save` 方法：
 
 	<?php
 
@@ -253,12 +254,12 @@ To create a new record in the database, simply create a new model instance, set 
 		}
 	}
 
-In this example, we simply assign the `name` parameter from the incoming HTTP request to the `name` attribute of the `App\Flight` model instance. When we call the `save` method, a record will be inserted into the database. The `created_at` and `updated_at` timestamps will automatically be set when the `save` method is called, so there is no need to set them manually.
+在上面这个例子中，我们把通过 HTTP 请求传进来的 `name` 参数直接赋值给 `App\Flight` 模型实例的 `name` 属性。当我们调用 `save` 方法时就会向数据库中插入一条记录。当调用 `save` 方法时 `created_at` 和 `updated_at` 时间戳就会被自动更新，不需要我们自己动手。
 
 <a name="basic-updates"></a>
-### Basic Updates
+### 基本的更新操作
 
-The `save` method may also be used to update models that already exist in the database. To update a model, you should retrieve it, set any attributes you wish to update, and then call the `save` method. Again, the `updated_at` timestamp will automatically be updated, so there is no need to manually set its value:
+`save` 方法可以用于更新数据库中已经存在的模型（model）。为了更新一个模型（model），首先你必须从数据库中将其取出，然后为需要更新的属性赋值，最后调用 `save` 方法。此外，`updated_at` 时间戳会被自动更新，所以不需要手动设置 `updated_at` 的值：
 
 	$flight = App\Flight::find(1);
 
@@ -268,14 +269,16 @@ The `save` method may also be used to update models that already exist in the da
 
 Updates can also be performed against any number of models that match a given query. In this example, all flights that are `active` and have a `destination` of `San Diego` will be marked as delayed:
 
+更新操作也可以在符合指定查询条件的多个模型实例上进行。在下面例子中，所有标记为 `active` 并且 `destination` 是 `San Diego` 的飞机都被标记为延时：
+
 	App\Flight::where('active', 1)
 			  ->where('destination', 'San Diego')
 			  ->update(['delayed' => 1]);
 
-The `update` method expects an array of column and value pairs representing the columns that should be updated.
+传递给 `update` 方法的参数必须是一个数组，数组中包含的是一系列键值对，分别对应需要更新的字段名称和更新后的值。
 
 <a name="mass-assignment"></a>
-### Mass Assignment
+### 批量赋值
 
 You may also use the `create` method to save a new model in a single line. The inserted model instance will be returned to you from the method. However, before doing so, you will need to specify either a `fillable` or `guarded` attribute on the model, as all Eloquent models protect against mass-assignment.
 
@@ -515,16 +518,18 @@ Now, you may pass the parameters when calling the scope:
 	$users = App\User::ofType('admin')->get();
 
 <a name="events"></a>
-## Events
+## 事件
 
 Eloquent models fire several events, allowing you to hook into various points in the model's lifecycle using the following methods: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`. Events allow you to easily execute code each time a specific model class is saved or updated in the database.
 
+Eloquent 模型（model）能够触发多个事件，通过调用下面所列出的方法，你可以在模型（model）的生命周期中的每个“关键点”上执行自己的代码，从而影响模型（model）的执行流程：`creating`、`created`、`updating`、`updated`、`saving、`saved`、`deleting`、`deleted`、`restoring`、`restored`。每当某个模型（model）被保存或更新到数据库中时，你都能通过事件轻松地插入自己编写的代码并让它执行。
+
 <a name="basic-usage"></a>
-### Basic Usage
+### 基本用法
 
-Whenever a new model is saved for the first time, the `creating` and `created` events will fire. If a model already existed in the database and the `save` method is called, the `updating` / `updated` events will fire. However, in both cases, the `saving` / `saved` events will fire.
+每当一个新模型（model）头一次被保存时，都将触发 `creating` 和 `created` 事件。 如果模型（model）已经存在于数据库中，并且 `save` 方法被调用了，将触发 `updating` / `updated` 事件。无论如何，`saving` / `saved ` 事件都会被触发。
 
-For example, let's define an Eloquent event listener in a [service provider](/docs/{{version}}/providers). Within our event listener, we will call the `isValid` method on the given model, and return `false` if the model is not valid. Returning `false` from an Eloquent event listener will cancel the `save` / `update` operation:
+例如，我们在一个[服务提供者（service provider）](/docs/{{version}}/providers) 中定义一个 Eloquent 事件监听器。在我们的事件监听器中，我们要在给定的模型（model）上调用 `isValid` 方法，如果该模型（model）是无效的，则返回 `false` 。如果 Eloquent 事件监听器中返回的是 `false` ，将取消 `save` / `update` 操作：
 
 	<?php
 
