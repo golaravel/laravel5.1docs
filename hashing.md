@@ -1,19 +1,21 @@
 # Hashing
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
+- [简介](#introduction)
+- [基本用法](#basic-usage)
 
 <a name="introduction"></a>
-## Introduction
+## 简介
 
-The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt hashing for storing user passwords. If you are using the `AuthController` controller that is included with your Laravel application, it will automatically use Bcrypt for registration and authentication.
+Laravel 自带的 `Hash` [facade](/docs/{{version}}/facades) 提供了采用 Bcrypt 加密算法的加密方式，用于存储用户密码。如果你正在使用 Laravel app 中自带的 `AuthController` 控制器（controller），它将自动为注册和验证过程采用 Bcrypt 算法。
 
-Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases.
+对于加密密码来说，Bcrypt 是一个非常好的选择，因为它的 “加密系数（work factor）” 是可调整的，这就意味着，即便计算机硬件能力在逐步提升，通过调整 “加密系数”，计算一个哈希所消耗的时间也会随着提升，就是说破解的难度不会因为计算能力的提升而降低。
+
+> 关于加密方面的知识，推荐看一看这篇文章：[http://www.williamlong.info/archives/3224.html](http://www.williamlong.info/archives/3224.html)
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-You may hash a password by calling the `make` method on the `Hash` facade:
+通过调用 `Hash` facade 中的 `make` 方法即可对密码进行加密：
 
 	<?php
 
@@ -45,21 +47,21 @@ You may hash a password by calling the `make` method on the `Hash` facade:
 		}
 	}
 
-Alternatively, you may also use the global `bcrypt` helper function:
+另外，你还可以直接使用全局作用域中的  `bcrypt` 辅助函数：
 
 	bcrypt('plain-text');
 
-#### Verifying A Password Against A Hash
+#### 根据哈希值校验密码
 
-The `check` method allows you to verify that a given plain-text string corresponds to a given hash. However, if you are using the `AuthController` [included with Laravel](/docs/{{version}}/authentication), you will probably not need to use this directly, as the included authentication controller automatically calls this method:
+`check` 方法帮你检查一个纯文本字符串是否是一个哈希值。然而，如果你正在使用 [Laravel 中自带](/docs/{{version}}/authentication) 的 `AuthController`，你就不需要直接调用这个函数了，因为 `AuthController` 已经自动帮你调用这个方法了：
 
 	if (Hash::check('plain-text', $hashedPassword)) {
 		// The passwords match...
 	}
 
-#### Checking If A Password Needs To Be Rehashed
+#### 检查密码是否需要重新加密
 
-The `needsRehash` function allows you to determine if the work factor used by the hasher has changed since the password was hashed:
+`needsRehash` 函数帮助你检查自从密码被加密之后，加密系数（work factor）是否被改变了：
 
 	if (Hash::needsRehash($hashed)) {
 		$hashed = Hash::make('plain-text');

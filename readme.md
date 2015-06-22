@@ -14,6 +14,7 @@
 
 - [x] installation.md
 - [x] encryption.md
+- [x] hashing.md
 - [ ] blade.md
 - [ ] structure.md
 - [ ] eloquent.md
