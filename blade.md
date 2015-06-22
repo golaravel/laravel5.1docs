@@ -115,7 +115,7 @@ You may display data passed to your Blade views by wrapping the variable in "cur
 
 #### 展示未转义的数据
 
-默认情况下，Blade 的 `{{ }}` 表达式会自动通过 PHP 的 `htmlentities` 函数进行处理，以防止 XSS 攻击。如果你不想自己的数据被转义，请使用如下语法：
+默认情况下，Blade 的 `{{ }}` 表达式会自动通过 PHP 的 `htmlentities` 函数进行处理，以防止 XSS 攻击。如果你不希望自己的数据被转义，请使用如下语法：
 
 	Hello, {!! $name !!}.
 

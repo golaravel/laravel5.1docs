@@ -331,13 +331,12 @@ The first argument passed to the `hasManyThrough` method is the name of the fina
 
 Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model, while the fourth argument is the name of the foreign key on the final model.
 
-	class Country extends Model {
-
+	class Country extends Model
+	{
 		public function posts()
 		{
 			return $this->hasManyThrough('App\Post', 'App\User', 'country_id', 'user_id');
 		}
-
 	}
 
 <a name="polymorphic-relations"></a>
@@ -717,6 +716,23 @@ In addition to the `save` and `saveMany` methods, you may also use the `create` 
 	]);
 
 Before using the `create` method, be sure to review the documentation on attribute [mass assignment](/docs/{{version}}/eloquent#mass-assignment).
+
+<a name="updating-belongs-to-relationships"></a>
+#### Updating "Belongs To" Relationships
+
+When updating a `belongsTo` relationship, you may use the `associate` method. This method will set the foreign key on the child model:
+
+	$account = App\Account::find(10);
+
+	$user->account()->associate($account);
+
+	$user->save();
+
+When removing a `belongsTo` relationship, you may use the `dissociate` method. This method will reset the foreign key as well as the relation on the child model:
+
+	$user->account()->dissociate();
+
+	$user->save();
 
 <a name="inserting-many-to-many-relationships"></a>
 ### Many To Many Relationships
