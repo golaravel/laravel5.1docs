@@ -16,3 +16,4 @@
 - [x] encryption.md
 - [ ] blade.md
 - [ ] structure.md
+- [ ] eloquent.md
