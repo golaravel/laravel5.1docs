@@ -17,3 +17,4 @@
 - [ ] blade.md
 - [ ] structure.md
 - [ ] eloquent.md
+- [ ] upgrade.md
