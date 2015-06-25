@@ -1,18 +1,18 @@
 # 安装
 
-- [Installation](#安装)
-- [Configuration](#设置)
-	- [基本设置](#basic-configuration)
-	- [环境设置](#environment-configuration)
-	- [Configuration Caching](#configuration-caching)
-	- [访问配置值](#accessing-configuration-values)
-	- [为应用命名](#naming-your-application)
+- [安装](#installation)
+- [配置](#configuration)
+	- [基本配置](#basic-configuration)
+	- [环境配置](#environment-configuration)
+	- [配置缓存](#configuration-caching)
+	- [获取配置](#accessing-configuration-values)
+	- [为应用程序命名](#naming-your-application)
 - [维护模式](#maintenance-mode)
 
 <a name="installation"></a>
 ## 安装
 
-### 运行环境需求
+### 对运行环境的要求
 
 Laravel 框架对系统环境有一些要求。当然，所有这些要求在 [Laravel Homestead](/docs/{{version}}/homestead) 虚拟机中都是预装好的：
 
@@ -27,7 +27,19 @@ Laravel 框架对系统环境有一些要求。当然，所有这些要求在 [L
 <a name="install-laravel"></a>
 ### 安装 Laravel
 
-Laravel 利用 [Composer](http://getcomposer.org) 来管理其自身的依赖包。因此，在使用 Laravel 之前，请务必确保在你的机器上已经安装了 Composer 。
+Laravel 利用 [Composer](http://getcomposer.org) 来管理其自身的依赖包。因此，在使用 Laravel 之前，请务必确保在你的机器上已经安装了 Composer 。如果你是下载“一键安装包”的话，可以暂时不用安装 Composer，等熟悉 Laravel 了再回头摸索，免得上来就遇到钉子。
+
+#### 下载 Laravel 一键安装包
+
+安装 Composer 或通过 Composer 下载 Laravel 的依赖包时都可能被墙，为了方便大家学习和开发 Laravel 应用，Laravel 中文网已经提供了 Laravel 各个版本的一键安装包。这些一键安装包都已经集成了所有依赖（也就是已经执行过 `composer install` 了，`vendor` 目录已经就绪）。
+
+下载地址：[http://www.golaravel.com/download/](http://www.golaravel.com/download/)
+
+另外，一键安装包还包含了以下修改：
+
+- Laravel 5.x 版本都已经包含了一份 `.env` 配置文件，大家可以不用自己创建这个文件了。
+- 对于所有 Laravel 版本都已经设置了 Application key（也就是通过 `php artisan key:generate` 生成了秘钥），注意：最终上线时，请务必重新执行一次 `php artisan key:generate` 指令，以便重新生成秘钥。
+- 去除了所有视图文件中引用的 google 字体。
 
 #### 通过 Laravel 安装工具安装 Laravel
 
@@ -35,9 +47,9 @@ Laravel 利用 [Composer](http://getcomposer.org) 来管理其自身的依赖包
 
 	composer global require "laravel/installer=~1.1"
 
-请确保将 `~/.composer/vendor/bin` 目录设置于你的 `PATH` 环境变量里， 这样 `laravel` 执行文件就就能被你的系统检测到了。
+请确保 `PATH` 环境变量已经添加了 `~/.composer/vendor/bin` 目录，这样，可执行文件 `laravel` 就能被你的系统检测到了。
 
-一旦安装完成后，就可以使用 `laravel new` 命令在你指定的目录中建立一份全新安装的 `Laravel` 应用。例如： `laravel new blog` 命令会在当前目录下建立一个名为 `blog` 的目录， 此目录里面存放着全新的 Laravel ，并且所有依赖包也已经安装好了。此方法的安装速度会比通过 Composer 安装快很多。
+一旦安装完成后，就可以使用 `laravel new` 命令在你指定的目录中建立一份全新安装的 `Laravel` 应用。例如： `laravel new blog` 命令会在当前目录下建立一个名为 `blog` 的目录， 此目录里面存放着全新安装的 Laravel ，并且所有依赖包也已经安装好了。此方法的安装速度会比通过 Composer 安装快很多。
 
 	laravel new blog
 
@@ -59,9 +71,9 @@ Laravel 框架所用的所有配置文件都被存放在 `config` 目录下。�
 
 安装 Laravel 之后，可能需要你配置一下目录权限。web 服务器需要拥有 `storage` 目录下的所有目录和 `bootstrap/cache` 目录的写权限。如果你在使用 [Homestead](/docs/{{version}}/homestead) 虚拟机，这些权限都已经帮你设置好了。
 
-#### Application Key
+#### 应用程序的秘钥
 
-安装 Laravel 之后接下来需要做的就是设置一个随机字串作为应用的 key。如果你是通过 Composer 或 Laravel 安装器安装的 Laravel，这个 key 已经由 `key:generate` 命令自动生成并设置了。一般情况下，这个作为 key 的字串的长度是 32 个字符。这个 key 还可以在 `.env` 环境配置文件中设置。如果你没有将 `.env.example` 文件改名为 `.env`，那就现在就做吧。**如果应用的 key 没有被配置，会话和其他需要加密的数据将不安全！**
+安装 Laravel 之后接下来需要做的就是设置一个随机字串作为应用的秘钥（key）。如果你是通过 Composer 或 Laravel 安装器安装的 Laravel，这个 key 已经由 `key:generate` 命令自动生成并设置了。一般情况下，这个作为 key 的字串的长度是 32 个字符。这个 key 还可以在 `.env` 环境配置文件中设置。如果你没有将 `.env.example` 文件改名为 `.env`，那就现在就做吧。**如果应用的 key 没有被配置，会话和其他需要加密的数据将不安全！**
 
 #### 额外的配置
 
@@ -73,7 +85,7 @@ Laravel 开箱即用，几乎不需要什么配置。现在就可以开始你的
 - [数据库](/docs/{{version}}/database#configuration)
 - [会话](/docs/{{version}}/session#configuration)
 
-完成 Laravel 安装后，建议阅读 [配置你的本地开发环境](/docs/{{version}}/installation#environment-configuration).
+完成 Laravel 安装后，建议阅读 [环境配置](/docs/{{version}}/installation#environment-configuration)章节。
 
 <a name="pretty-urls"></a> 章节。
 #### 美化链接
@@ -104,23 +116,23 @@ Laravel 框架自带了 `public/.htaccess` 文件用来从网址中删除 `index
 <a name="environment-configuration"></a>
 ### 环境配置
 
-It is often helpful to have different configuration values based on the environment the application is running in. For example, you may wish to use a different cache driver locally than you do on your production server. It's easy using environment based configuration.
+通常应用程序需要根据不同的运行环境加载不同的配置信息。例如，你可能希望本机开发环境与生产服务器环境使用不同的缓存驱动。通过配置文件，就可以轻松完成。
 
-To make this a cinch, Laravel utilizes the [DotEnv](https://github.com/vlucas/phpdotenv) PHP library by Vance Lucas. In a fresh Laravel installation, the root directory of your application will contain a `.env.example` file. If you install Laravel via Composer, this file will automatically be renamed to `.env`. Otherwise, you should rename the file manually.
+为了简化配置，Laravel 使用了 Vance Lucas 开发的 [DotEnv](https://github.com/vlucas/phpdotenv) 库。在全新安装的 Laravel 中，应用程序的根目录下都会有一个 `.env.example` 文件，如果你是通过 Composer 安装的 Laravel，这个文件将被自动重命名为 `.env`。如果没有，请手动重命名。
 
-All of the variables listed in this file will be loaded into the `$_ENV` PHP super-global when your application receives a request. You may use the `env` helper to retrieve values from these variables. In fact, if you review the Laravel configuration files, you will notice several of the options already using this helper!
+当应用程序收到一个请求时，`.env` 文件中的所有变量都会被加载到 PHP 的 `$_ENV` 超全局变量中。这是，你就可以通过 `env` 辅助函数来从此超全局级变量中获取需要的配置了。实际上，如果你查看 Laravel 的配置文件，你会发现有几个配置项已经在使用这个辅助函数了。
 
-Feel free to modify your environment variables as needed for your own local server, as well as your production environment. However, your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration.
+根据你自己的本地开发环境和生产环境来修改这些环境配置即可。不过，`.env` 文件不应该和应用程序的源码一起被提交到源码仓库中，因为每个开发环境/服务器环境可能需要不同的环境配置。
 
-If you are developing with a team, you may wish to continue including a `.env.example` file with your application. By putting place-holder values in the example configuration file, other developers on your team can clearly see which environment variables are needed to run your application.
+如果你们是一个开发团队，可能希望将 `.env.example` 文件包含到源码中。通过在配置文件中预留一些占位符，团队中的其他开发人员将可以很清楚地看到执行此应用程序都需要配置哪些环境变量。
 
-#### Accessing The Current Application Environment
+#### 获取应用程序的运行环境
 
-The current application environment is determined via the `APP_ENV` variable from your `.env` file. You may access this value via the `environment` method on the `App` [facade](/docs/{{version}}/facades):
+应用程序的运行环境可以通过 `.env` 文件中的 `APP_ENV` 变量来确定。你还可以调用 `App` [facade](/docs/{{version}}/facades) 中的 `environment` 方法：
 
 	$environment = App::environment();
 
-You may also pass arguments to the `environment` method to check if the environment matches a given value. You may even pass multiple values if necessary:
+通过给 `environment` 方法传递参数可以检查当前环境是否与所传参数一致。如果需要，也可以传递多个值作为参数：
 
 	if (App::environment('local')) {
 		// The environment is local
@@ -130,56 +142,56 @@ You may also pass arguments to the `environment` method to check if the environm
 		// The environment is either local OR staging...
 	}
 
-An application instance may also be accessed via the `app` helper method:
+通过 `app` 辅助方法可以访问当前应用程序的实例：
 
 	$environment = app()->environment();
 
 <a name="configuration-caching"></a>
-### Configuration Caching
+### 配置缓存
 
-To give your application a speed boost, you should cache all of your configuration files into a single file using the `config:cache` Artisan command. This will combine all of the configuration options for your application into a single file which can be loaded quickly by the framework.
+为了提升应用程序的执行速度，建议通过 Artisan 的 `config:cache` 命令将所有配置文件合并到一个文件中并缓存起来。这将合并你应用中的所有配置信息到单个文件中，这样它就能被框架更快地载入。
 
-You should typically run the `config:cache` command as part of your deployment routine.
+建议将执行 `config:cache` 命令作为部署时的一个步骤。
 
 <a name="accessing-configuration-values"></a>
-### Accessing Configuration Values
+### 获取配置
 
-You may easily access your configuration values using the global `config` helper function. The configuration values may be accessed using "dot" syntax, which includes the name of the file and option you wish to access. A default value may also be specified and will be returned if the configuration option does not exist:
+通过 `config` 全局辅助方法，你可以很容易地访问配置信息。配置信息可以通过 “点” 语法访问到，“点”用于分割配置文件的名称和配置项的名称。你还可以为不存在的配置项指定一个默认的返回值：
 
 	$value = config('app.timezone');
 
-To set configuration values at runtime, pass an array to the `config` helper:
+如需在程序运行时重置配置信息，只需传递一个数组到 `config` 辅助方法即可：
 
 	config(['app.timezone' => 'America/Chicago']);
 
 <a name="naming-your-application"></a>
-### Naming Your Application
+### 为应用程序命名
 
-After installing Laravel, you may wish to "name" your application. By default, the `app` directory is namespaced under `App`, and autoloaded by Composer using the [PSR-4 autoloading standard](http://www.php-fig.org/psr/psr-4/). However, you may change the namespace to match the name of your application, which you can easily do via the `app:name` Artisan command.
+安装 Laravel 后，你可能希望为自己的应用程序起个名字。默认情况下，`app` 目录所对应的命名空间为 `App`，并且 Compsoer 依据 [PSR-4 自动载入标准](http://www.php-fig.org/psr/psr-4/)来加载此目录下的文件。不过，你可以将命名空间修改为应用程序的名字。执行 Artisan 的 `app:name` 命令即可完成更改。
 
-For example, if your application is named "Horsefly", you could run the following command from the root of your installation:
+例如，如果你的应用被命名为 "Horsefly"，你可以在应用程序的根目录下执行以下命令：
 
 	php artisan app:name Horsefly
 
-Renaming your application is entirely optional, and you are free to keep the `App` namespace if you wish.
+重命名你的应用不是必须的。如果你愿意，你完全可以保留默认的 `App` 作为命名空间。
 
 <a name="maintenance-mode"></a>
 ## 维护模式
 
-When your application is in maintenance mode, a custom view will be displayed for all requests into your application. This makes it easy to "disable" your application while it is updating or when you are performing maintenance. A maintenance mode check is included in the default middleware stack for your application. If the application is in maintenance mode, an `HttpException` will be thrown with a status code of 503.
+如果你的应用处于维护模式，当有请求传入时，将显示一个自定义的视图。当你对应用做更新或维护操作时，这能让你非常方便地"关闭"应用。默认的中间件栈中包含了用于检查是否处于维护模式的方法。如果当前应用处于维护模式，一个带有 503 状态码的 `HttpException` 异常将被抛出。
 
-To enable maintenance mode, simply execute the `down` Artisan command:
+要开启维护模式，只需简单地执行 Artisan 中的 `down` 命令即可：
 
 	php artisan down
 
-To disable maintenance mode, use the `up` command:
+要关闭维护模式，使用 `up` 命令即可：
 
 	php artisan up
 
-### Maintenance Mode Response Template
+### 在维护模式时响应请求的模板文件
 
-The default template for maintenance mode responses is located in `resources/views/errors/503.blade.php`.
+用于在维护模式时响应请求的默认模板文件位于 `resources/views/errors/503.blade.php`。
 
-### Maintenance Mode & Queues
+### 护模式和队列
 
-While your application is in maintenance mode, no [queued jobs](/docs/{{version}}/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+当你的应用处于维护模式时，[队列任务](/docs/{{version}}/queues) 将不会被处理。关闭维护模式后，这些任务将继续正常处理。
