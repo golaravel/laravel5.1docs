@@ -19,6 +19,7 @@ Laravel 框架对系统环境有一些要求。当然，所有这些要求在 [L
 <div class="content-list" markdown="1">
 - PHP >= 5.5.9
 - OpenSSL PHP 扩展
+- PDO PHP 扩展
 - Mbstring PHP 扩展
 - Tokenizer PHP 扩展
 </div>
