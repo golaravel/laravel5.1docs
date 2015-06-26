@@ -1,31 +1,31 @@
-# Contracts
+# Contract
 
-- [Introduction](#introduction)
-- [Why Contracts?](#why-contracts)
-- [Contract Reference](#contract-reference)
-- [How To Use Contracts](#how-to-use-contracts)
+- [简介](#introduction)
+- [为什么要用 Contract？](#why-contracts)
+- [Contract 参考](#contract-reference)
+- [如何使用 Contract](#how-to-use-contracts)
 
 <a name="introduction"></a>
-## Introduction
+## 简介
 
-Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, a `Illuminate\Contracts\Queue\Queue` contract defines the methods needed for queueing jobs, while the `Illuminate\Contracts\Mail\Mailer` contract defines the methods needed for sending e-mail.
+Laravel 中的 Contract 是一组定义了框架核心服务的接口。例如，`Illuminate\Contracts\Queue\Queue` contract 定义了实现队列任务所需实现的方法，而 `Illuminate\Contracts\Mail\Mailer` contract 定义了发送邮件所需要实现的方法。
 
-Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by [SwiftMailer](http://swiftmailer.org/).
+框架为每个 contract 都提供了一个相对应的实现。例如，Laravel 为队列提供了各种驱动的实现，以及基于 [SwiftMailer](http://swiftmailer.org/) 对邮件功能的实现。
 
-All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts). This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by package developers.
+Laravel 所自带的所有 contract 都[有自己的 GitHub 仓库](https://github.com/illuminate/contracts)。除了方便列出所有可用的 contract 外，也可以作为独立、解耦的工具包供其他开发者使用。
 
-### Contracts Vs. Facades
+### Contract Vs. Facade
 
-Laravel's [facades](/docs/{{version}}/facades) provide a simple way of utilizing Laravel's services without needing to type-hint and resolve contracts out of the service container. However, using contracts allows you to define explicit dependencies for your classes. For most applications, using a facade is just fine. However, if you really need the extra loose coupling that contracts can provide, keep reading!
+Laravel 中的 [facades](/docs/{{version}}/facades) 提供了一个简单的方法来使用 Laravel 自带的服务（service），而不需要使用使用类型提示（type-hint）和在服务容器（service container）之外解析 contract。然而，使用 contract 可以明确地为类定义其依赖。对于大部分应用程序而放眼，使用 facade 就足够了。然而，如果你需要更多的低耦合，contract 就适合你了，你可以继续往下看了解更多！
 
 <a name="why-contracts"></a>
-## Why Contracts?
+## 为什么使用 Contract ？
 
-You may have several questions regarding contracts. Why use interfaces at all? Isn't using interfaces more complicated? Let's distil the reasons for using interfaces to the following headings: loose coupling and simplicity.
+你可能对于 contract 还有很多疑问。为什么要使用接口（interface）？使用接口会不会更复杂了？接下来列出的两个标题能够解释这个问题：低耦合和简单性。
 
-### Loose Coupling
+### 低耦合
 
-First, let's review some code that is tightly coupled to a cache implementation. Consider the following:
+首先，我们来看一下这段和缓存功能的实现具有强耦合的代码。如下：
 
 	<?php
 
@@ -63,11 +63,11 @@ First, let's review some code that is tightly coupled to a cache implementation.
 		}
 	}
 
-In this class, the code is tightly coupled to a given cache implementation. It is tightly coupled because we are depending on a concrete Cache class from a package vendor. If the API of that package changes our code must change as well.
+在这个类中，代码和缓存功能的实现之间是强耦合的。因为它依赖第三方工具包中定义的缓存类。如果这个第三方工具包的 API 改变了，我们的代码也要跟着变。
 
-Likewise, if we want to replace our underlying cache technology (Memcached) with another technology (Redis), we again will have to modify our repository. Our repository should not have so much knowledge regarding who is providing them data or how they are providing it.
+同样的，如果我们希望用另一项技术（Redis）来替换掉现在所用的（Memcached），我们必须修改代码。我们所定义的类不应该依赖是谁提供了数据以及如何提供的等等细节。
 
-**Instead of this approach, we can improve our code by depending on a simple, vendor agnostic interface:**
+**比起上面代码中的做法，我们的代码应该依赖一个简单、不依赖第三方实现细节的接口：**
 
 	<?php
 
@@ -89,20 +89,20 @@ Likewise, if we want to replace our underlying cache technology (Memcached) with
 		}
 	}
 
-Now the code is not coupled to any specific vendor, or even Laravel. Since the contracts package contains no implementation and no dependencies, you may easily write an alternative implementation of any given contract, allowing you to replace your cache implementation without modifying any of your cache consuming code.
+现在，上面的代码已经不再和具体的第三方代码甚至是 Laravel 有任何耦合了。由于 contract 工具包不包含任何实现，也不依赖其他工具包，你可以很方便地为任何 contract 创造一个实现，甚至在不需要修改任何涉及到调用缓存的代码的情况下替换为你自己的缓存实现。
 
-### Simplicity
+### 简单性
 
-When all of Laravel's services are neatly defined within simple interfaces, it is very easy to determine the functionality offered by a given service. **The contracts serve as succinct documentation to the framework's features.**
+当所有的 Laravel 服务（service）都通过简洁的接口进行定义，就能够很容易地确定这个服务提供的是什么功能了。**可以将 contract 视为框架所提供的简洁明了的说明文档。**
 
-In addition, when you depend on simple interfaces, your code is easier to understand and maintain. Rather than tracking down which methods are available to you within a large, complicated class, you can refer to a simple, clean interface.
+另外，当你依赖一个简单清晰的接口时，你的代码能够被别人轻松的理解并维护。比起在一个冗长、复杂的类中追踪哪些方法可用来说，你所面对的将是一个简洁、干净的接口。
 
 <a name="contract-reference"></a>
-## Contract Reference
+## Contract 索引
 
-This is a reference to most Laravel Contracts, as well as their Laravel "facade" counterparts:
+下面列出的是大部分 Laravel Contract 的索引文件，以及对应的 "facade" ：
 
-Contract  |  References Facade
+Contract  |  对应的 Facade
 ------------- | -------------
 [Illuminate\Contracts\Auth\Guard](https://github.com/illuminate/contracts/blob/master/Auth/Guard.php)  |  Auth
 [Illuminate\Contracts\Auth\PasswordBroker](https://github.com/illuminate/contracts/blob/master/Auth/PasswordBroker.php)  |  Password
@@ -139,13 +139,13 @@ Contract  |  References Facade
 [Illuminate\Contracts\View\View](https://github.com/illuminate/contracts/blob/master/View/View.php) | &nbsp;
 
 <a name="how-to-use-contracts"></a>
-## How To Use Contracts
+## 如何使用 Contract
 
-So, how do you get an implementation of a contract? It's actually quite simple.
+那么，如何实例化一个 contract 呢？其实很简单。
 
-Many types of classes in Laravel are resolved through the [service container](/docs/{{version}}/container), including controllers, event listeners, middleware, queued jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved.
+Laravel 中的很多类都是由 [服务容器](/docs/{{version}}/container) 来解析的，包括控制器、事件监听器、中间件、队列任务，甚至路由闭包（route closure）。因此，要实例化一个 contract，你可以在，类的构造函数中加入“类型提示（type-hint）”。
 
-For example, take a look at this event listener:
+例如，请看下面的事件监听器：
 
 	<?php
 
@@ -185,4 +185,4 @@ For example, take a look at this event listener:
 		}
 	}
 
-When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [its documentation](/docs/{{version}}/container).
+当事件监听器被解析的时候，服务容器将会读取构造函数的类型提示（type-hint），并注入适当的值。关于如何向服务容器注册，请参考[此文档](/docs/{{version}}/container)。

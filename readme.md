@@ -19,3 +19,4 @@
 - [ ] structure.md
 - [ ] eloquent.md
 - [ ] upgrade.md
+- [x] contracts.md
