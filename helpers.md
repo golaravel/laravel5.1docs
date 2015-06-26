@@ -38,6 +38,7 @@ Laravel includes a variety of "helper" PHP functions. Many of these functions ar
 [array_pull](#method-array-pull)
 [array_set](#method-array-set)
 [array_sort](#method-array-sort)
+[array_sort_recursive](#method-array-recursive)
 [array_where](#method-array-where)
 [head](#method-head)
 [last](#method-last)
@@ -275,6 +276,41 @@ The `array_sort` method sorts the array by the results of the given Closure:
 			['name' => 'Chair'],
 			['name' => 'Desk'],
 		]
+	*/
+
+<a name="method-array-sort-recursive"></a>
+#### `array_sort_recursive()` {#collection-method}
+
+The `array_sort_recursive` function recursively sorts the array using the `sort` function:
+
+	$array = [
+		[
+			'Roman',
+			'Taylor',
+			'Li',
+		],
+		[
+			'PHP',
+			'Ruby',
+			'JavaScript',
+		],
+	];
+
+	$array = array_sort_recursive($array);
+
+	/*
+		[
+			[
+				'Li',
+				'Roman',
+				'Taylor',
+			],
+			[
+				'JavaScript',
+				'PHP',
+				'Ruby',
+			]
+		];
 	*/
 
 <a name="method-array-where"></a>
@@ -535,7 +571,7 @@ The `action` function generates a URL for the given controller action. You do no
 
 	$url = action('HomeController@getIndex');
 
-If the method accepts route parameters, you may them as the second argument to the method:
+If the method accepts route parameters, you may pass them as the second argument to the method:
 
 	$url = action('UserController@profile', ['id' => 1]);
 
@@ -546,7 +582,7 @@ The `route` function generates a URL for the given named route:
 
 	$url = route('routeName');
 
-If the route accepts parameters, you may them as the second argument to the method:
+If the route accepts parameters, you may pass them as the second argument to the method:
 
 	$url = route('routeName', ['id' => 1]);
 
