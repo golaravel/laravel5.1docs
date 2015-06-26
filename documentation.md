@@ -19,8 +19,8 @@
     - [应用程序结构](/docs/{{version}}/structure)
     - [服务提供者](/docs/{{version}}/providers)
     - [服务容器](/docs/{{version}}/container)
-    - [Contracts](/docs/{{version}}/contracts)
-    - [Facades](/docs/{{version}}/facades)
+    - [Contract](/docs/{{version}}/contracts)
+    - [Facade](/docs/{{version}}/facades)
 - 系统服务
     - [认证](/docs/{{version}}/authentication)
     - [Artisan 控制台](/docs/{{version}}/artisan)
