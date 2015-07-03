@@ -27,41 +27,41 @@ Laravel 中的 [facades](/docs/{{version}}/facades) 提供了一个简单的方�
 
 首先，我们来看一下这段和缓存功能的实现具有强耦合的代码。如下：
 
-	<?php
+    <?php
 
-	namespace App\Orders;
+    namespace App\Orders;
 
-	class Repository
-	{
-		/**
-		 * The cache.
-		 */
-		protected $cache;
+    class Repository
+    {
+        /**
+         * The cache.
+         */
+        protected $cache;
 
-		/**
-		 * Create a new repository instance.
-		 *
-		 * @param  \SomePackage\Cache\Memcached  $cache
-		 * @return void
-		 */
-		public function __construct(\SomePackage\Cache\Memcached $cache)
-		{
-			$this->cache = $cache;
-		}
+        /**
+         * Create a new repository instance.
+         *
+         * @param  \SomePackage\Cache\Memcached  $cache
+         * @return void
+         */
+        public function __construct(\SomePackage\Cache\Memcached $cache)
+        {
+            $this->cache = $cache;
+        }
 
-		/**
-		 * Retrieve an Order by ID.
-		 *
-		 * @param  int  $id
-		 * @return Order
-		 */
-		public function find($id)
-		{
-			if ($this->cache->has($id))	{
-				//
-			}
-		}
-	}
+        /**
+         * Retrieve an Order by ID.
+         *
+         * @param  int  $id
+         * @return Order
+         */
+        public function find($id)
+        {
+            if ($this->cache->has($id))    {
+                //
+            }
+        }
+    }
 
 在这个类中，代码和缓存功能的实现之间是强耦合的。因为它依赖第三方工具包中定义的缓存类。如果这个第三方工具包的 API 改变了，我们的代码也要跟着变。
 
@@ -69,25 +69,25 @@ Laravel 中的 [facades](/docs/{{version}}/facades) 提供了一个简单的方�
 
 **比起上面代码中的做法，我们的代码应该依赖一个简单、不依赖第三方实现细节的接口：**
 
-	<?php
+    <?php
 
-	namespace App\Orders;
+    namespace App\Orders;
 
-	use Illuminate\Contracts\Cache\Repository as Cache;
+    use Illuminate\Contracts\Cache\Repository as Cache;
 
-	class Repository
-	{
-		/**
-		 * Create a new repository instance.
-		 *
-		 * @param  Cache  $cache
-		 * @return void
-		 */
-		public function __construct(Cache $cache)
-		{
-			$this->cache = $cache;
-		}
-	}
+    class Repository
+    {
+        /**
+         * Create a new repository instance.
+         *
+         * @param  Cache  $cache
+         * @return void
+         */
+        public function __construct(Cache $cache)
+        {
+            $this->cache = $cache;
+        }
+    }
 
 现在，上面的代码已经不再和具体的第三方代码甚至是 Laravel 有任何耦合了。由于 contract 工具包不包含任何实现，也不依赖其他工具包，你可以很方便地为任何 contract 创造一个实现，甚至在不需要修改任何涉及到调用缓存的代码的情况下替换为你自己的缓存实现。
 
@@ -147,42 +147,42 @@ Laravel 中的很多类都是由 [服务容器](/docs/{{version}}/container) 来
 
 例如，请看下面的事件监听器：
 
-	<?php
+    <?php
 
-	namespace App\Listeners;
+    namespace App\Listeners;
 
-	use App\User;
-	use App\Events\NewUserRegistered;
-	use Illuminate\Contracts\Redis\Database;
+    use App\User;
+    use App\Events\NewUserRegistered;
+    use Illuminate\Contracts\Redis\Database;
 
-	class CacheUserInformation
-	{
-		/**
-		 * The Redis database implementation.
-		 */
-		protected $redis;
+    class CacheUserInformation
+    {
+        /**
+         * The Redis database implementation.
+         */
+        protected $redis;
 
-		/**
-		 * Create a new event handler instance.
-		 *
-		 * @param  Database  $redis
-		 * @return void
-		 */
-		public function __construct(Database $redis)
-		{
-			$this->redis = $redis;
-		}
+        /**
+         * Create a new event handler instance.
+         *
+         * @param  Database  $redis
+         * @return void
+         */
+        public function __construct(Database $redis)
+        {
+            $this->redis = $redis;
+        }
 
-		/**
-		 * Handle the event.
-		 *
-		 * @param  NewUserRegistered  $event
-		 * @return void
-		 */
-		public function handle(NewUserRegistered $event)
-		{
-			//
-		}
-	}
+        /**
+         * Handle the event.
+         *
+         * @param  NewUserRegistered  $event
+         * @return void
+         */
+        public function handle(NewUserRegistered $event)
+        {
+            //
+        }
+    }
 
 当事件监听器被解析的时候，服务容器将会读取构造函数的类型提示（type-hint），并注入适当的值。关于如何向服务容器注册，请参考[此文档](/docs/{{version}}/container)。

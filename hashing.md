@@ -17,52 +17,52 @@ Laravel 自带的 `Hash` [facade](/docs/{{version}}/facades) 提供了采用 Bcr
 
 通过调用 `Hash` facade 中的 `make` 方法即可对密码进行加密：
 
-	<?php
+    <?php
 
-	namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-	use Hash;
-	use App\User;
-	use Illuminate\Http\Request;
-	use App\Http\Controllers\Controller;
+    use Hash;
+    use App\User;
+    use Illuminate\Http\Request;
+    use App\Http\Controllers\Controller;
 
-	class UserController extends Controller
-	{
-		/**
-		 * Update the password for the user.
-		 *
-		 * @param  Request  $request
-		 * @param  int  $id
-		 * @return Response
-		 */
-		public function updatePassword(Request $request, $id)
-		{
-			$user = User::findOrFail($id);
+    class UserController extends Controller
+    {
+        /**
+         * Update the password for the user.
+         *
+         * @param  Request  $request
+         * @param  int  $id
+         * @return Response
+         */
+        public function updatePassword(Request $request, $id)
+        {
+            $user = User::findOrFail($id);
 
-			// Validate the new password length...
+            // Validate the new password length...
 
-			$user->fill([
-				'password' => Hash::make($request->newPassword)
-			])->save();
-		}
-	}
+            $user->fill([
+                'password' => Hash::make($request->newPassword)
+            ])->save();
+        }
+    }
 
 另外，你还可以直接使用全局作用域中的  `bcrypt` 辅助函数：
 
-	bcrypt('plain-text');
+    bcrypt('plain-text');
 
 #### 根据哈希值校验密码
 
 `check` 方法帮你检查一个纯文本字符串是否是一个哈希值。然而，如果你正在使用 [Laravel 中自带](/docs/{{version}}/authentication) 的 `AuthController`，你就不需要直接调用这个函数了，因为 `AuthController` 已经自动帮你调用这个方法了：
 
-	if (Hash::check('plain-text', $hashedPassword)) {
-		// The passwords match...
-	}
+    if (Hash::check('plain-text', $hashedPassword)) {
+        // The passwords match...
+    }
 
 #### 检查密码是否需要重新加密
 
 `needsRehash` 函数帮助你检查自从密码被加密之后，加密系数（work factor）是否被改变了：
 
-	if (Hash::needsRehash($hashed)) {
-		$hashed = Hash::make('plain-text');
-	}
+    if (Hash::needsRehash($hashed)) {
+        $hashed = Hash::make('plain-text');
+    }

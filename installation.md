@@ -2,11 +2,11 @@
 
 - [安装](#installation)
 - [配置](#configuration)
-	- [基本配置](#basic-configuration)
-	- [环境配置](#environment-configuration)
-	- [配置缓存](#configuration-caching)
-	- [获取配置](#accessing-configuration-values)
-	- [为应用程序命名](#naming-your-application)
+    - [基本配置](#basic-configuration)
+    - [环境配置](#environment-configuration)
+    - [配置缓存](#configuration-caching)
+    - [获取配置](#accessing-configuration-values)
+    - [为应用程序命名](#naming-your-application)
 - [维护模式](#maintenance-mode)
 
 <a name="installation"></a>
@@ -45,19 +45,19 @@ Laravel 利用 [Composer](http://getcomposer.org) 来管理其自身的依赖包
 
 首先，使用 Composer 下载 Laravel 安装包：
 
-	composer global require "laravel/installer=~1.1"
+    composer global require "laravel/installer=~1.1"
 
 请确保 `PATH` 环境变量已经添加了 `~/.composer/vendor/bin` 目录，这样，可执行文件 `laravel` 就能被你的系统检测到了。
 
 一旦安装完成后，就可以使用 `laravel new` 命令在你指定的目录中建立一份全新安装的 `Laravel` 应用。例如： `laravel new blog` 命令会在当前目录下建立一个名为 `blog` 的目录， 此目录里面存放着全新安装的 Laravel ，并且所有依赖包也已经安装好了。此方法的安装速度会比通过 Composer 安装快很多。
 
-	laravel new blog
+    laravel new blog
 
 #### 通过 Composer Create-Project 命令安装 Laravel
 
 还可以通过 Composer 的 `create-project` 命令来安装 Laravel：
 
-	composer create-project laravel/laravel --prefer-dist
+    composer create-project laravel/laravel --prefer-dist
 
 <a name="configuration"></a>
 ## 配置
@@ -96,20 +96,20 @@ Laravel 框架自带了 `public/.htaccess` 文件用来从网址中删除 `index
 
 如果 Laravel 自带的 `.htaccess` 文件在你的 Apache 中不起作用，请试一试下面的配置：
 
-	Options +FollowSymLinks
-	RewriteEngine On
+    Options +FollowSymLinks
+    RewriteEngine On
 
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule ^ index.php [L]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
 
 **Nginx**
 
 在 Nginx 中，将下面的指令放到站点配置文件中就可以实现美化链接的功能：
 
-	location / {
-		try_files $uri $uri/ /index.php?$query_string;
-	}
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
 
 当然，如果你用的是 [Homestead](/docs/{{version}}/homestead)，美化链接的功能已经被自动配置好了。
 
@@ -130,21 +130,21 @@ Laravel 框架自带了 `public/.htaccess` 文件用来从网址中删除 `index
 
 应用程序的运行环境可以通过 `.env` 文件中的 `APP_ENV` 变量来确定。你还可以调用 `App` [facade](/docs/{{version}}/facades) 中的 `environment` 方法：
 
-	$environment = App::environment();
+    $environment = App::environment();
 
 通过给 `environment` 方法传递参数可以检查当前环境是否与所传参数一致。如果需要，也可以传递多个值作为参数：
 
-	if (App::environment('local')) {
-		// The environment is local
-	}
+    if (App::environment('local')) {
+        // The environment is local
+    }
 
-	if (App::environment('local', 'staging')) {
-		// The environment is either local OR staging...
-	}
+    if (App::environment('local', 'staging')) {
+        // The environment is either local OR staging...
+    }
 
 通过 `app` 辅助方法可以访问当前应用程序的实例：
 
-	$environment = app()->environment();
+    $environment = app()->environment();
 
 <a name="configuration-caching"></a>
 ### 配置缓存
@@ -158,11 +158,11 @@ Laravel 框架自带了 `public/.htaccess` 文件用来从网址中删除 `index
 
 通过 `config` 全局辅助方法，你可以很容易地访问配置信息。配置信息可以通过 “点” 语法访问到，“点”用于分割配置文件的名称和配置项的名称。你还可以为不存在的配置项指定一个默认的返回值：
 
-	$value = config('app.timezone');
+    $value = config('app.timezone');
 
 如需在程序运行时重置配置信息，只需传递一个数组到 `config` 辅助方法即可：
 
-	config(['app.timezone' => 'America/Chicago']);
+    config(['app.timezone' => 'America/Chicago']);
 
 <a name="naming-your-application"></a>
 ### 为应用程序命名
@@ -171,7 +171,7 @@ Laravel 框架自带了 `public/.htaccess` 文件用来从网址中删除 `index
 
 例如，如果你的应用被命名为 "Horsefly"，你可以在应用程序的根目录下执行以下命令：
 
-	php artisan app:name Horsefly
+    php artisan app:name Horsefly
 
 重命名你的应用不是必须的。如果你愿意，你完全可以保留默认的 `App` 作为命名空间。
 
@@ -182,11 +182,11 @@ Laravel 框架自带了 `public/.htaccess` 文件用来从网址中删除 `index
 
 要开启维护模式，只需简单地执行 Artisan 中的 `down` 命令即可：
 
-	php artisan down
+    php artisan down
 
 要关闭维护模式，使用 `up` 命令即可：
 
-	php artisan up
+    php artisan up
 
 ### 在维护模式时响应请求的模板文件
 

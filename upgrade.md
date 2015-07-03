@@ -17,14 +17,14 @@
 
 修改 `bootstrap/autoload.php` 文件中的 `$compiledPath` 变量为如下值：
 
-	$compiledPath = __DIR__.'/cache/compiled.php';
+    $compiledPath = __DIR__.'/cache/compiled.php';
 
 ### 创建 `bootstrap/cache` 目录
 
 在 `bootstrap` 目录下面创建 `cache` 目录（即 `bootstrap/cache`）。然后在此目录下创建一个命名为 `.gitignore` 的文件，其内容为：
 
-	*
-	!.gitignore
+    *
+    !.gitignore
 
 `bootstrap/cache` 目录徐璈设置为可写权限，将来 Laravel 框架将使用此目录临时存放优化文件，如 `compiled.php`、`routes.php`、`config.php` 和 `services.json`。
 
@@ -56,29 +56,29 @@ Likewise, if you are overriding the `formatErrors` method on the base form reque
 
 Eloquent's `create` method can now be called without any parameters. If you are overriding the `create` method in your own models, set the default value of the `$attributes` parameter to an array:
 
-	public static function create(array $attributes = [])
-	{
-		// Your custom implementation
-	}
+    public static function create(array $attributes = [])
+    {
+        // Your custom implementation
+    }
 
 #### The `find` Method
 
 If you are overriding the `find` method in your own models and calling `parent::find()` within your custom method, you should now change it to call the `find` method on the Eloquent query builder:
 
-	public static function find($id, $columns = ['*'])
-	{
-		$model = static::query()->find($id, $columns);
+    public static function find($id, $columns = ['*'])
+    {
+        $model = static::query()->find($id, $columns);
 
-		// ...
+        // ...
 
-		return $model;
-	}
+        return $model;
+    }
 
 #### The `lists` Method
 
 The `lists` method now returns a `Collection` instance instead of a plain array for Eloquent queries. If you would like to convert the `Collection` into a plain array, use the `all` method:
 
-	User::lists('id')->all();
+    User::lists('id')->all();
 
 Be aware that the Query Builder `lists` method still returns an array.
 
@@ -94,22 +94,22 @@ The date format is also now applied when serializing a model to an `array` or JS
 
 The `sortBy` method now returns a fresh collection instance instead of modifying the existing collection:
 
-	$collection = $collection->sortBy('name');
+    $collection = $collection->sortBy('name');
 
 #### `groupBy` 方法
 
 The `groupBy` method now returns `Collection` instances for each item in the parent `Collection`. If you would like to convert all of the items back to plain arrays, you may `map` over them:
 
-	$collection->groupBy('type')->map(function($item)
-	{
-		return $item->all();
-	});
+    $collection->groupBy('type')->map(function($item)
+    {
+        return $item->all();
+    });
 
 #### `lists` 方法
 
 `lists` 方法不再返回普通的数组（array）了，现在的实现中返回的是 `Collection` 实例。如果你希望将 `Collection` 转换为普通数组，请使用 `all` 方法：
 
-	$collection->lists('id')->all();
+    $collection->lists('id')->all();
 
 ### Commands & Handlers
 
@@ -127,7 +127,11 @@ The `createMatcher`, `createOpenMatcher`, and `createPlainMatcher` methods have 
 
 Add the protected `$baseUrl` property to the `tests/TestCase.php` file:
 
-	protected $baseUrl = 'http://localhost';
+    protected $baseUrl = 'http://localhost';
+
+### Translation Files
+
+The default directory for published language files for vendor packages has been moved. Move any vendor package language files from `resources/lang/packages/{locale}/{namespace}` to `resources/lang/vendor/{namespace}/{locale}` directory. For example, `Acme/Anvil` package's `acme/anvil::foo` namespaced English language file would be moved from `resources/lang/packages/en/acme/anvil/foo.php` to `resources/lang/vendor/acme/anvil/en/foo.php`.
 
 ### Amazon Web Services SDK
 
@@ -161,7 +165,7 @@ If you are using the Amazon S3 filesystem driver, you will need to update the co
 
 在 `bootstrap/autoload.php` 文件中, 把 `$compiledPath` 变量更新为：
 
-   $compiledPath = __DIR__.'/../vendor/compiled.php';
+    $compiledPath = __DIR__.'/../vendor/compiled.php';
 
 <a name="upgrade-5.0"></a>
 ## 从 4.2 升级到 5.0
@@ -222,6 +226,8 @@ Laravel 5 并没有将过滤器移除，您一样可以使用 `before` 和 `afte
 ### 全局 CSRF
 
 默认情况下，所有路由都会使用[CSRF 保护](/docs/{{version}}/routing#csrf-protection)。若想关闭他们，或是在指定在特定路由开启，请移除 `App\Http\Kernel` 中 `middleware` 数组内的这一行：
+
+    'App\Http\Middleware\VerifyCsrfToken',
 
 如果您想在其他地方使用它，加入这一行到 `$routeMiddleware`:
 
@@ -393,13 +399,15 @@ Laravel 4.2 需要 PHP 5.4.0 以上。
 
     use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-    class User extends Eloquent {
+    class User extends Eloquent
+    {
         use SoftDeletingTrait;
     }
 
 你一样必须手动增加 `deleted_at` 字段到你的 `dates` 属性中：
 
-    class User extends Eloquent {
+    class User extends Eloquent
+    {
         use SoftDeletingTrait;
 
         protected $dates = ['deleted_at'];
@@ -423,7 +431,7 @@ Laravel 4.2 需要 PHP 5.4.0 以上。
 
 如果你使用 Iron.io queue 驱动，你将需要增加一个新的 `encrypt` 选项到你的 queue 设置文件中：
 
-	'encrypt' => true
+    'encrypt' => true
 
 <a name="upgrade-4.1.29"></a>
 ## 从 4.1.x 升级到 4.1.29
@@ -495,11 +503,11 @@ Laravel 4.1.26 采用了针对「记得我」cookies 的安全性更新。在此
 
 在你的 `app/config/queue.php` 文件里添加 `failed` 设置区块。以下为区块的默认值：
 
-    'failed' => array(
-        'database' => 'mysql', 'table' => 'failed_jobs',
-    ),
-
 **（非必要）** 在你的 `app/config/view.php` 里，将 `pagination` 设置选项更新为 `pagination::slider-3`。
+
+    'failed' => [
+        'database' => 'mysql', 'table' => 'failed_jobs',
+    ],
 
 ### 更新控制器（Controllers）
 
