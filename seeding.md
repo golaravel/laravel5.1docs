@@ -14,7 +14,7 @@ Laravel包含一个使用Seeder类将测试数据填充至你的数据库的简�
 <a name="writing-seeders"></a>
 ## 编写 Seeders
 
-你可以执行 `make:seeder` [Artisan 命令](/docs/{{version}}/artisan) 来生成一个Seeder。所有通过框架生成的SSeeder都会被放在 `database/seeders` 目录中：
+你可以执行 `make:seeder` [Artisan 命令](/docs/{{version}}/artisan) 来生成一个Seeder。所有通过框架生成的Seeder都会被放在 `database/seeders` 目录中：
 
     php artisan make:seeder UserTableSeeder
 
