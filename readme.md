@@ -29,4 +29,5 @@
 - [ ] controllers.md
 
 ### Micooz
-- [ ] seeding.md
+- [x] seeding.md
+- [ ] helpers.md
