@@ -31,3 +31,6 @@
 ### Micooz
 - [x] seeding.md
 - [ ] helpers.md
+
+### friparia
+- [ ] artisan.md
