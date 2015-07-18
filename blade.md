@@ -101,7 +101,7 @@ You may display data passed to your Blade views by wrapping the variable in "cur
 
 在上述实例中，`@` 符号将被 Blade 移除，同时，`{{ name }}` 表达式将被原样输出，这就能够确保在浏览器端被你的 JavaScript 框架解释了。
 
-#### 如果数据存储就将其输出
+#### 如果数据存在就将其输出
 
 某些时候你需要输出变量的值，但是在输出前你并不知道这个变量是否被赋值了。我们将这个问题化作代码描述如下：
 
