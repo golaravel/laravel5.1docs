@@ -26,7 +26,7 @@
     *
     !.gitignore
 
-`bootstrap/cache` 目录徐璈设置为可写权限，将来 Laravel 框架将使用此目录临时存放优化文件，如 `compiled.php`、`routes.php`、`config.php` 和 `services.json`。
+`bootstrap/cache` 目录需要设置有可写权限，将来 Laravel 框架将使用此目录临时存放优化文件，如 `compiled.php`、`routes.php`、`config.php` 和 `services.json`。
 
 ### 添加 `BroadcastServiceProvider` 服务提供者
 
