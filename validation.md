@@ -7,7 +7,7 @@
     - [Writing The Validation Logic](#quick-writing-the-validation-logic)
     - [Displaying The Validation Errors](#quick-displaying-the-validation-errors)
     - [AJAX Requests & Validation](#quick-ajax-requests-and-validation)
-- [Other Validation Approaches](#foo)
+- [Other Validation Approaches](#other-validation-approaches)
     - [Manually Creating Validators](#manually-creating-validators)
     - [Form Request Validation](#form-request-validation)
 - [Working With Error Messages](#working-with-error-messages)
@@ -107,7 +107,7 @@ As you can see, we simply pass the incoming HTTP request and desired validation 
 If your HTTP request contains "nested" parameters, you may specify them in your validation rules using "dot" syntax:
 
     $this->validate($request, [
-        'title' => 'required|unqiue:posts|max:255',
+        'title' => 'required|unique:posts|max:255',
         'author.name' => 'required',
         'author.description' => 'required',
     ]);

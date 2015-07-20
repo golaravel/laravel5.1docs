@@ -14,24 +14,24 @@
 <a name="introduction"></a>
 ## 简介
 
-Artisan是Laravel中自带的命令行工具的名称。它提供了一些对您的应用开发有帮助的命令。它是由强大的Symfony Console组件驱动的。为了查看所有可用的Artisan的命令，您可以使用`list`命令来列出它们：
+Artisan 是 Laravel 中自带的命令行工具的名称。它提供了一些对您的应用开发有帮助的命令。它是由强大的 Symfony Console 组件驱动的。为了查看所有可用的 Artisan 的命令，您可以使用 `list` 命令来列出它们：
 
     php artisan list
 
-每一个命令都包含有”help”信息，用来显示和描述这个命令可用的参数和选项。为了查看帮助信息，仅需在命令前添加`help`即可：
+每一个命令都包含有 ”help” 信息，用来显示和描述这个命令可用的参数和选项。为了查看帮助信息，仅需在命令前添加 `help` 即可：
 
     php artisan help migrate
 
 <a name="writing-commands"></a>
 ## 创建命令
 
-除了Artisan自带的命令，您也可以创建与您的应用相关的自定义命令。这些命令将会被储存在 `app/Console/Commands` 文件夹下，然而，只要您的命令可以被 `composer.json` 自动载入，您可以自由地选择命令的存放位置。
+除了 Artisan 自带的命令，您也可以创建与您的应用相关的自定义命令。这些命令将会被储存在 `app/Console/Commands` 文件夹下，然而，只要您的命令可以被 `composer.json` 自动载入，您可以自由地选择命令的存放位置。
 
-要创建一个新命令，您可以使用 `make:console` 这个Artisan命令，这将会生成一个命令的模板文件帮助您进行开发：
+要创建一个新命令，您可以使用 `make:console` 这个 Artisan 命令，这将会生成一个命令的模板文件帮助您进行开发：
 
     php artisan make:console SendEmails
 
-上面的命令会在 `app/Console/Commands/SendEmails.php` 文件中生成一个类。在创建命令时，加上 `--command` 这个选项，将可以指定这个终端命令的名称，即在运行Artisan命令的时候所输入的名称：
+上面的命令会在 `app/Console/Commands/SendEmails.php` 文件中生成一个类。在创建命令时，加上 `--command` 这个选项，将可以指定这个终端命令的名称，即在运行 Artisan 命令的时候所输入的名称：
 
 
     php artisan make:console SendEmails --command=emails:send
@@ -43,7 +43,7 @@ Artisan是Laravel中自带的命令行工具的名称。它提供了一些对您
 
 `handle` 方法会在您的命令执行时被调用。您可以在这个方法中加入命令的具体逻辑。下面是一个自定义命令的例子。
 
-既然我们要所有我们所需要的依赖注入到命令的构造器中。Laravel的[服务容器](/docs/{{version}}/container) 将会在构造器中自动的注入所有类型约束的依赖。为了更好的代码复用性，保持您的控制台命令简洁并且让它们由应用服务去处理完成它们的任务是一个很好的实践方法。
+既然我们要所有我们所需要的依赖注入到命令的构造器中。Laravel 的[服务容器](/docs/{{version}}/container) 将会在构造器中自动的注入所有类型约束的依赖。为了更好的代码复用性，保持您的控制台命令简洁并且让它们由应用服务去处理完成它们的任务是一个很好的实践方法。
 
     <?php
 
@@ -107,7 +107,7 @@ Artisan是Laravel中自带的命令行工具的名称。它提供了一些对您
 <a name="defining-input-expectations"></a>
 ### 定义输入期望
 
-在写控制台命令的代码的时候时，收集用户输入的参数或选项是一项很普遍的事情。Laravel通过使用您命令中的 `signature` 属性来使得定义您所期望的用户输入的形式变得非常方便。`signature` 属性允许您用一种简洁、富有表现力、仿路由的语法去定义命令的名称、参数、和选项。
+在写控制台命令的代码的时候时，收集用户输入的参数或选项是一项很普遍的事情。Laravel 通过使用您命令中的 `signature` 属性来使得定义您所期望的用户输入的形式变得非常方便。`signature` 属性允许您用一种简洁、富有表现力、仿路由的语法去定义命令的名称、参数、和选项。
 
 所有用户提供的参数和选项被大括号所包裹，如下所示：
 
@@ -126,7 +126,7 @@ Artisan是Laravel中自带的命令行工具的名称。它提供了一些对您
     // Optional argument with default value...
     email:send {user=foo}
 
-选项，像参数一样，也是用户输入的一种。但是，当它们在命令行中指定时，它们的前缀是由两个连字符构成。我们可以在`signature`中像这样定义选项：
+选项，像参数一样，也是用户输入的一种。但是，当它们在命令行中指定时，它们的前缀是由两个连字符构成。我们可以在 `signature` 中像这样定义选项：
 
     /**
      * The name and signature of the console command.
@@ -135,7 +135,7 @@ Artisan是Laravel中自带的命令行工具的名称。它提供了一些对您
      */
     protected $signature = 'email:send {user} {--queue}';
 
-在这个例子中，`--queue` 开关在调用Artisan命令的时候被指定。如果 `--queue` 开关参数被传入，这个选项的值即为 `true`，否则，这个选项的值就为 `false`：
+在这个例子中，`--queue` 开关在调用 Artisan 命令的时候被指定。如果 `--queue` 开关参数被传入，这个选项的值即为 `true`，否则，这个选项的值就为 `false`：
 
     php artisan email:send 1 --queue
 
@@ -242,7 +242,7 @@ Artisan是Laravel中自带的命令行工具的名称。它提供了一些对您
 <a name="writing-output"></a>
 ### 输出信息
 
-使用 `info`，`comment`，`question` 和`error`方法将输出显示在控制台上。每一种方法会得到一个对应的ANSI颜色。
+使用 `info`，`comment`，`question` 和 `error` 方法将输出显示在控制台上。每一种方法会得到一个对应的 ANSI 颜色。
 
 使用 `info` 方法来向用户显示信息。典型的，这个将会在控制台显示绿色字符：
 
@@ -262,7 +262,7 @@ Artisan是Laravel中自带的命令行工具的名称。它提供了一些对您
 
 #### 输出表格
 
-使用`table` 方法会让您正确地格式化数据的行列。仅需向方法传入表格的头部。表格的宽和高将会由给出的数据动态的计算出来：
+使用 `table` 方法会让您正确地格式化数据的行列。仅需向方法传入表格的头部。表格的宽和高将会由给出的数据动态的计算出来：
 
     $headers = ['Name', 'Email'];
 
@@ -286,14 +286,14 @@ Artisan是Laravel中自带的命令行工具的名称。它提供了一些对您
 
     $this->output->progressFinish();
 
-更高级的选项，可以查看[Symfony Progress Bar component documentation](http://symfony.com/doc/2.7/components/console/helpers/progressbar.html).
+更高级的选项，可以查看 [Symfony Progress Bar component documentation](http://symfony.com/doc/2.7/components/console/helpers/progressbar.html).
 
 <a name="registering-commands"></a>
 ## 注册命令
 
 一旦完成了命令的编写，您需要将它和Artisan注册在一起，这样它才能够正常使用。书写的代码在 `app/Console/Kernel.php` 文件中完成。
 
-在这个文件中，您会在 `commands` 属性中发现一个命令的列表。简单地将您的命令的类名添加到列表中就可以注册您的命令了。当Artisan启动的时候，所有在这个属性中列出来的命令将会被[service container](/docs/{{version}}/container)解析，并且在Artisan中注册。
+在这个文件中，您会在 `commands` 属性中发现一个命令的列表。简单地将您的命令的类名添加到列表中就可以注册您的命令了。当 Artisan 启动的时候，所有在这个属性中列出来的命令将会被 [service container](/docs/{{version}}/container) 解析，并且在 Artisan 中注册。
 
     protected $commands = [
         'App\Console\Commands\SendEmails'
@@ -302,7 +302,7 @@ Artisan是Laravel中自带的命令行工具的名称。它提供了一些对您
 <a name="calling-commands-via-code"></a>
 ## 在代码中调用命令
 
-有时候您期望在CLI外执行Artisan命令。例如，您可能期望在路由或者控制器中执行一个Artisan命令。您可以使用在 `Artisan` Facade 中的 `call` 方法去完成这件事情。`call`方法第一个参数接受命令的名称，第二个参数接受一个由参数组成的数组。这个方法将会返回一个返回值。
+有时候您期望在 CLI 外执行 Artisan 命令。例如，您可能期望在路由或者控制器中执行一个 Artisan 命令。您可以使用在 `Artisan` Facade 中的 `call` 方法去完成这件事情。`call`方法的第一个参数是命令的名称，传递给命令的参数所组成的数组构成第二个参数。此方法将会返回一个返回值。
 
     Route::get('/foo', function () {
         $exitCode = Artisan::call('email:send', [
@@ -312,7 +312,7 @@ Artisan是Laravel中自带的命令行工具的名称。它提供了一些对您
         //
     });
 
-使用 `Artisan` Facade 中的 `queue` 命令可以让您在后台的队列[queue workers](/docs/{{version}}/queues)中执行您的命令：
+使用 `Artisan` Facade 中的 `queue` 命令可以让您在后台的队列 [queue workers](/docs/{{version}}/queues) 中执行您的命令：
 
     Route::get('/foo', function () {
         Artisan::queue('email:send', [
@@ -322,7 +322,7 @@ Artisan是Laravel中自带的命令行工具的名称。它提供了一些对您
         //
     });
 
-如果您需要强制指定一个不接受字符串选项的值，比如在 `migrate:refresh` 命令中的 `--force` 标志，您可以传入布尔值 `true` 或 `false` 的参数。
+如果您需要强制指定某个选项的值不能是字符串，比如在 `migrate:refresh` 命令中的 `--force` 标志，您可以传入布尔值 `true` 或 `false` 来指定。
 
     $exitCode = Artisan::call('migrate:refresh', [
         '--force' => true,
@@ -330,7 +330,7 @@ Artisan是Laravel中自带的命令行工具的名称。它提供了一些对您
 
 ### 在其他命令中调用命令
 
-有时候你可能希望调用其他在已存在的Artisan命令中的命令。您可以用 `call` 方法来这样做。这个 `call` 方法接受命令名和一个由参数构成的数组参数。
+有时候你可能希望调用其他在已存在的 Artisan 命令中的命令。您可以用 `call` 方法来这样做。这个 `call` 方法接受命令名和一个由参数构成的数组参数。
 
     /**
      * Execute the console command.
