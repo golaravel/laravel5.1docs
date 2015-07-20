@@ -73,7 +73,7 @@ Laravel 框架所用的所有配置文件都被存放在 `config` 目录下。�
 
 #### 应用程序的秘钥
 
-安装 Laravel 之后接下来需要做的就是设置一个随机字串作为应用的秘钥（key）。如果你是通过 Composer 或 Laravel 安装器安装的 Laravel，这个 key 已经由 `key:generate` 命令自动生成并设置了。一般情况下，这个作为 key 的字串的长度是 32 个字符。这个 key 还可以在 `.env` 环境配置文件中设置。如果你没有将 `.env.example` 文件改名为 `.env`，那就现在就做吧。**如果应用的 key 没有被配置，会话和其他需要加密的数据将不安全！**
+安装 Laravel 之后接下来需要做的就是设置一个随机字串作为应用的秘钥（key）。如果你是通过 Composer 或 Laravel 安装器安装的 Laravel，这个 key 已经由 `key:generate` 命令自动生成并设置了。一般情况下，这个作为 key 的字串的长度是 32 个字符。这个 key 还可以在 `.env` 环境配置文件中设置。如果你没有将 `.env.example` 文件改名为 `.env`，那现在就做吧。**如果应用的 key 没有被配置，会话和其他需要加密的数据将不安全！**
 
 #### 额外的配置
 
@@ -87,7 +87,6 @@ Laravel 开箱即用，几乎不需要什么配置。现在就可以开始你的
 
 完成 Laravel 安装后，建议阅读 [环境配置](/docs/{{version}}/installation#environment-configuration)章节。
 
-<a name="pretty-urls"></a> 章节。
 #### 美化链接
 
 **Apache**
@@ -120,7 +119,7 @@ Laravel 框架自带了 `public/.htaccess` 文件用来从网址中删除 `index
 
 为了简化配置，Laravel 使用了 Vance Lucas 开发的 [DotEnv](https://github.com/vlucas/phpdotenv) 库。在全新安装的 Laravel 中，应用程序的根目录下都会有一个 `.env.example` 文件，如果你是通过 Composer 安装的 Laravel，这个文件将被自动重命名为 `.env`。如果没有，请手动重命名。
 
-当应用程序收到一个请求时，`.env` 文件中的所有变量都会被加载到 PHP 的 `$_ENV` 超全局变量中。这是，你就可以通过 `env` 辅助函数来从此超全局级变量中获取需要的配置了。实际上，如果你查看 Laravel 的配置文件，你会发现有几个配置项已经在使用这个辅助函数了。
+当应用程序收到一个请求时，`.env` 文件中的所有变量都会被加载到 PHP 的 `$_ENV` 超全局变量中。这时，你就可以通过 `env` 辅助函数来从该超全局变量中获取需要的配置了。实际上，如果你查看 Laravel 的配置文件，你会发现有几个配置项已经在使用这个辅助函数了。
 
 根据你自己的本地开发环境和生产环境来修改这些环境配置即可。不过，`.env` 文件不应该和应用程序的源码一起被提交到源码仓库中，因为每个开发环境/服务器环境可能需要不同的环境配置。
 
@@ -167,7 +166,7 @@ Laravel 框架自带了 `public/.htaccess` 文件用来从网址中删除 `index
 <a name="naming-your-application"></a>
 ### 为应用程序命名
 
-安装 Laravel 后，你可能希望为自己的应用程序起个名字。默认情况下，`app` 目录所对应的命名空间为 `App`，并且 Compsoer 依据 [PSR-4 自动载入标准](http://www.php-fig.org/psr/psr-4/)来加载此目录下的文件。不过，你可以将命名空间修改为应用程序的名字。执行 Artisan 的 `app:name` 命令即可完成更改。
+安装 Laravel 后，你可能希望为自己的应用程序起个名字。默认情况下，`app` 目录所对应的命名空间为 `App`，并且 Composer 依据 [PSR-4 自动载入标准](http://www.php-fig.org/psr/psr-4/)来加载此目录下的文件。不过，你可以将命名空间修改为应用程序的名字。执行 Artisan 的 `app:name` 命令即可完成更改。
 
 例如，如果你的应用被命名为 "Horsefly"，你可以在应用程序的根目录下执行以下命令：
 
@@ -192,6 +191,6 @@ Laravel 框架自带了 `public/.htaccess` 文件用来从网址中删除 `index
 
 用于在维护模式时响应请求的默认模板文件位于 `resources/views/errors/503.blade.php`。
 
-### 护模式和队列
+### 维护模式和队列
 
 当你的应用处于维护模式时，[队列任务](/docs/{{version}}/queues) 将不会被处理。关闭维护模式后，这些任务将继续正常处理。
