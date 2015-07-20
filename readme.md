@@ -10,7 +10,7 @@
 
 ## 文档同步
 
-与官方英文文档同步至进度：[288fba6](https://github.com/laravel/docs/commit/288fba671b93c8fbf3665809b4cf60956b14f131)
+与官方英文文档同步至进度：[2e8ac2afa02871704fe6869ccef4a445a6b86a30](https://github.com/laravel/docs/commit/2e8ac2afa02871704fe6869ccef4a445a6b86a30)
 
 ## 翻译任务分配及进度
 
