@@ -30,7 +30,8 @@
 
 ### Micooz
 - [x] seeding.md
-- [ ] helpers.md
+- [x] helpers.md
 
 ### friparia
-- [ ] artisan.md
+- [x] artisan.md
+- [ ] middleware.md
