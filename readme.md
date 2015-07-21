@@ -31,6 +31,7 @@
 ### Micooz
 - [x] seeding.md
 - [x] helpers.md
+- [ ] redis.md
 
 ### friparia
 - [x] artisan.md
