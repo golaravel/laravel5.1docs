@@ -1,28 +1,28 @@
-# HTTP Middleware
+# HTTP 中间件
 
-- [Introduction](#introduction)
-- [Defining Middleware](#defining-middleware)
-- [Registering Middleware](#registering-middleware)
-- [Middleware Parameters](#middleware-parameters)
-- [Terminable Middleware](#terminable-middleware)
+- [简介](#introduction)
+- [定义中间件](#defining-middleware)
+- [注册中间件](#registering-middleware)
+- [中间件参数](#middleware-parameters)
+- [可终止中间件](#terminable-middleware)
 
 <a name="introduction"></a>
-## Introduction
+## 简介
 
-HTTP middleware provide a convenient mechanism for filtering HTTP requests entering your application. For example, Laravel includes a middleware that verifies the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to the login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application.
+HTTP 中间件为过滤访问你的应用的 HTTP 请求提供了一个方便的机制。例如，Laravel 默认包含了一个验证用户的中间件。如果没有经过身份验证，中间件将会将用户重定向至登录页面。然而，如果用户经过了验证，中间件将会允许请求继续在应用中执行下去。
 
-Of course, additional middleware can be written to perform a variety of tasks besides authentication. A CORS middleware might be responsible for adding the proper headers to all responses leaving your application. A logging middleware might log all incoming requests to your application.
+当然，除了身份验证，中间件也可以被用来执行多种多样的任务。一个 CORS 中间件可能负责在所有应用发出去的响应中加入适当的头部。一个日志中间件可能记录所有发送给应用的请求的日志。
 
-There are several middleware included in the Laravel framework, including middleware for maintenance, authentication, CSRF protection, and more. All of these middleware are located in the `app/Http/Middleware` directory.
+Laravel 框架已经自带了一些中间件，包括维护、身份验证、CSRF保护等等。所有中间件都位于 `app/Http/Middleware` 文件夹中。
 
 <a name="defining-middleware"></a>
-## Defining Middleware
+## 定义中间件
 
-To create a new middleware, use the `make:middleware` Artisan command:
+使用 `make:middleware` Artisan 命令创建一个新的中间件：
 
     php artisan make:middleware OldMiddleware
 
-This command will place a new `OldMiddleware` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `age` is greater than 200. Otherwise, we will redirect the users back to the "home" URI.
+这个命令会在 `app/Http/Middleware` 文件夹中放置一个新的 `OldMiddleware` 类。在这个中间件中，我们只允许 `age` 大于 200 的才能访问到路由。否则，我们会把用户重定向至 "home" 的 URI。
 
     <?php
 
@@ -50,13 +50,14 @@ This command will place a new `OldMiddleware` class within your `app/Http/Middle
 
     }
 
-As you can see, if the given `age` is less than or equal to `200`, the middleware will return an HTTP redirect to the client; otherwise, the request will be passed further into the application. To pass the request deeper into the application (allowing the middleware to "pass"), simply call the `$next` callback with the `$request`.
+正如你看到的，如果用户给出的 `age` 小于或等于 `200`，中间件会给客户端返回一个 HTTP 重定向；否则，请求会继续在应用程序中执行下去。只用调用带有 `$request` 的 `$next` 方法，就可以将请求继续在应用中传递到更深层的逻辑（允许跳过中间件）。 
 
-It's best to envision middleware as a series of "layers" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely.
+在抵达应用程序之前，请求层层通过一系列中间件是最好的设计。每一层可以对其进行检查，甚至是完全拒绝请求。
 
-### *Before* / *After* Middleware
 
-Whether a middleware runs before or after a request depends on the middleware itself. For example, the following middleware would perform some task **before** the request is handled by the application:
+### *Before* / *After* 中间件
+
+一个中间件是否在一个请求之前或之后运行取决于这个中间件本身。举个例子，下面的中间件将会在请求前执行一些 **前置** 操作。
 
     <?php
 
@@ -74,7 +75,7 @@ Whether a middleware runs before or after a request depends on the middleware it
         }
     }
 
-However, this middleware would perform its task **after** the request is handled by the application:
+然而，下面这个中间件会在请求后执行一些 **后置** 操作：
 
     <?php
 
@@ -95,15 +96,15 @@ However, this middleware would perform its task **after** the request is handled
     }
 
 <a name="registering-middleware"></a>
-## Registering Middleware
+## 注册中间件
 
-### Global Middleware
+### 全局中间件
 
-If you want a middleware to be run during every HTTP request to your application, simply list the middleware class in the `$middleware` property of your `app/Http/Kernel.php` class.
+如果你期望中间件在每一个 HTTP 请求时都会执行，只需要将中间件类加入到 `app/Http/Kernel.php` 类的 `$middleware` 属性的列表中。
 
-### Assigning Middleware To Routes
+### 指派中间件给路由
 
-If you would like to assign middleware to specific routes, you should first assign the middleware a short-hand key in your `app/Http/Kernel.php` file. By default, the `$routeMiddleware` property of this class contains entries for the middleware included with Laravel. To add your own, simply append it to this list and assign it a key of your choosing. For example:
+如果你期望将中间件指派给一个特定的路由，你需要首先在 `app/Http/Kernel.php` 文件中指定一个键值。默认情况下，这个类的 `$routeMiddleware` 属性包含了 Laravel 目前已经配置的中间件。只需要在这个属性的列表里加上一组自定义的键值即可。
 
     // Within App\Http\Kernel Class...
 
@@ -113,18 +114,18 @@ If you would like to assign middleware to specific routes, you should first assi
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
     ];
 
-Once the middleware has been defined in the HTTP kernel, you may use the `middleware` key in the route options array:
+一旦中间件在 HTTP kernel 文件中被定义，你可以在路由选项数组中使用 `middleware` 键来指派：
 
     Route::get('admin/profile', ['middleware' => 'auth', function () {
         //
     }]);
 
 <a name="middleware-parameters"></a>
-## Middleware Parameters
+## 中间件参数
 
-Middleware can also receive additional custom parameters. For example, if your application needs to verify that the authenticated user has a given "role" before performing a given action, you could create a `RoleMiddleware` that receives a role name as an additional argument.
+中间件也可以接收额外的自定义参数。例如，如果你的应用需要验证用户是否在执行 action 之前拥有给定的 “角色”，你可以创建一个接受角色名称作为额外参数的 `RoleMiddleware` 中间件。
 
-Additional middleware parameters will be passed to the middleware after the `$next` argument:
+中间件的额外参数会在 `$next` 参数后传入：
 
     <?php
 
@@ -153,16 +154,16 @@ Additional middleware parameters will be passed to the middleware after the `$ne
 
     }
 
-Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`. Multiple parameters should be delimited by commas:
+中间件参数可以在定义路由时将中间件的名称和参数用 `:` 隔开来指定。多个参数应当用逗号隔开：
 
     Route::put('post/{id}', ['middleware' => 'role:editor', function ($id) {
         //
     }]);
 
 <a name="terminable-middleware"></a>
-## Terminable Middleware
+## 可终止中间件
 
-Sometimes a middleware may need to do some work after the HTTP response has already been sent to the browser. For example, the "session" middleware included with Laravel writes the session data to storage _after_ the response has been sent to the browser. To accomplish this, define the middleware as "terminable" by adding a `terminate` method to the middleware:
+有时候中间件可能需要在一个请求已经发送给浏览器后做一些工作。例如， Laravel 包含的 "session" 中间件需要在响应发送给用户_之后_保存 session 数据。你需要将中间件定义为 "可终止的" 来完成这件事情。 
 
     <?php
     
@@ -183,4 +184,5 @@ Sometimes a middleware may need to do some work after the HTTP response has alre
         }
     }
 
-The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of global middlewares in your HTTP kernel.
+`terminate` 方法会收到请求和相应。一旦你已经定义了一个可终止的中间件，你需要将它添加到 HTTP kernel 的全局中间件列表中去。
+
