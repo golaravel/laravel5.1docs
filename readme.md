@@ -36,3 +36,4 @@
 ### friparia
 - [x] artisan.md
 - [ ] middleware.md
+- [ ] authentication.md
