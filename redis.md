@@ -1,19 +1,19 @@
 # Redis
 
-- [Introduction](#introduction)
-- [Basic Usage](#basic-usage)
-    - [Pipelining Commands](#pipelining-commands)
-- [Pub / Sub](#pubsub)
+- [简介](#introduction)
+- [基本用法](#basic-usage)
+    - [管道命令](#pipelining-commands)
+- [发布 / 订阅](#pubsub)
 
 <a name="introduction"></a>
-## Introduction
+## 简介
 
-[Redis](http://redis.io) is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain [strings](http://redis.io/topics/data-types#strings), [hashes](http://redis.io/topics/data-types#hashes), [lists](http://redis.io/topics/data-types#lists), [sets](http://redis.io/topics/data-types#sets), and [sorted sets](http://redis.io/topics/data-types#sorted-sets). Before using Redis with Laravel, you will need to install the `predis/predis` package (~1.0) via Composer.
+[Redis](http://redis.io) 是一个开源的，先进的键-值存储库。因其可存储 [strings](http://redis.io/topics/data-types#strings), [hashes](http://redis.io/topics/data-types#hashes), [lists](http://redis.io/topics/data-types#lists), [sets](http://redis.io/topics/data-types#sets), 和 [sorted sets](http://redis.io/topics/data-types#sorted-sets)，又常常称为数据结构服务器。在Laravel中使用Redis之前，你需要通过Composer安装 `predis/predis` 包 (~1.0)。
 
 <a name="configuration"></a>
-### Configuration
+### 配置
 
-The Redis configuration for your application is located in the `config/database.php` configuration file. Within this file, you will see a `redis` array containing the Redis servers used by your application:
+你的应用的Redis配置位于 `config/database.php` 配置文件中。在此文件中，你会看到 `redis` 数组包含了你所使用的Redis服务器：
 
     'redis' => [
 
@@ -27,20 +27,20 @@ The Redis configuration for your application is located in the `config/database.
 
     ],
 
-The default server configuration should suffice for development. However, you are free to modify this array based on your environment. Simply give each Redis server a name, and specify the host and port used by the server.
+默认的服务器配置应该足以供开发使用。然而，你可以依照自己的环境自由地修改这个数组。简单地为每个Redis服务器指定名称，主机地址以及所使用的端口。
 
-The `cluster` option will tell the Laravel Redis client to perform client-side sharding across your Redis nodes, allowing you to pool nodes and create a large amount of available RAM. However, note that client-side sharding does not handle failover; therefore, is primarily suited for cached data that is available from another primary data store.
+`cluster` 选项会告知Laravel Redis客户端在你的Redis节点上执行客户端的分片，允许你集中节点以及创建大量的可用内存。但请注意客户端分片不能处理故障转移；因此它主要适用于缓存另一个主存储器中的数据。
 
-Additionally, you may define an `options` array value in your Redis connection definition, allowing you to specify a set of Predis [client options](https://github.com/nrk/predis/wiki/Client-Options).
+另外，你可以在Redis连接定义内定义一个 `options` 数组，这允许你指定一个Predis集合 [客户端选项](https://github.com/nrk/predis/wiki/Client-Options)。
 
-If your Redis server requires authentication, you may supply a password by adding a `password` configuration item to your Redis server configuration array.
+如果你的Redis服务器要求身份验证，你可把 `password` 配置项添加到你的Redis服务器配置数组中来提供密码。
 
-> **Note:** If you have the Redis PHP extension installed via PECL, you will need to rename the alias for Redis in your `config/app.php` file.
+> **注意:** 如果你通过PECL安装了Redis的PHP扩展，你需要在 `config/app.php` 文件中为Redis重起一个别名。
 
 <a name="basic-usage"></a>
-## Basic Usage
+## 基本用法
 
-You may interact with Redis by calling various methods on the `Redis` [facade](/docs/{{version}}/facades). The `Redis` facade supports dynamic methods, meaning you may call any [Redis command](http://redis.io/commands) on the facade and the command will be passed directly to Redis. In this example, we will call the `GET` command on Redis by calling the `get` method on the `Redis` facade:
+你可以通过 `Redis` [门面](/docs/{{version}}/facades) 调用许多方法来和Redis交互。`Redis` 门面支持动态方法，这意味着你可以通过门面调用任何 [Redis命令](http://redis.io/commands) 并且这些命令将直接传递给Redis。在这个例子中，我们将在 `Redis` 门面上调用 `get` 方法来使Redis调用 `GET` 命令：
 
     <?php
 
@@ -65,30 +65,30 @@ You may interact with Redis by calling various methods on the `Redis` [facade](/
         }
     }
 
-Of course, as mentioned above, you may call any of the Redis commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server, so simply pass the arguments the Redis command expects:
+当然，正如上面所提及的，你可在 `Redis` 门面上使用任意Redis命令。Laravel使用魔术方法来向Redis服务器传递命令，因此也可以简单地为Redis命令传递参数：
 
     Redis::set('name', 'Taylor');
 
     $values = Redis::lrange('names', 5, 10);
 
-Alternatively, you may also pass commands to the server using the `command` method, which accepts the name of the command as its first argument, and an array of values as its second argument:
+或者，也可用 `command` 方法向服务器传递命令，该方法接收命令名称作为第一个参数，数组作为第二个参数：
 
     $values = Redis::command('lrange', [5, 10]);
 
-#### Using Multiple Redis Connections
+#### 使用多Redis连接
 
-You may get a Redis instance by calling the `Redis::connection` method:
+你可通过调用 `Redis::connection` 方法来获得一个Redis实例：
 
     $redis = Redis::connection();
 
-This will give you an instance of the default Redis server. If you are not using server clustering, you may pass the server name to the `connection` method to get a specific server as defined in your Redis configuration:
+这将为你返回默认的Redis实例。如果你没使用服务器集群，可以向 `connection` 方法传递服务器名来获得你配置好的特定服务器：
 
     $redis = Redis::connection('other');
 
 <a name="pipelining-commands"></a>
-### Pipelining Commands
+### 管道命令
 
-Pipelining should be used when you need to send many commands to the server in one operation. The `pipeline` method accepts one argument: a `Closure` that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be executed within a single operation:
+当你需要在一个操作中发送许多命令时，应该使用管道。`pipeline` 方法接受一个参数：一个接收Redis实例的 `Closure` (闭包)。你可向这个Redis实例发布所有的命令，它们会在单一操作中全被执行：
 
     Redis::pipeline(function ($pipe) {
         for ($i = 0; $i < 1000; $i++) {
@@ -97,11 +97,11 @@ Pipelining should be used when you need to send many commands to the server in o
     });
 
 <a name="pubsub"></a>
-## Pub / Sub
+## 发布 / 订阅
 
-Laravel also provides a convenient interface to the Redis `publish` and `subscribe` commands. These Redis commands allow you to listen for messages on a given "channel". You may publish messages to the channel from another application, or even using another programming language, allowing easy communication between applications / processes.
+Laravel也为Redis的 `publish` 和 `subscribe` 命令提供了便捷的接口。这些Redis命令允许你在给定的 "频道" 中监听消息。你可从另一个应用将消息发布到该频道中，甚至是使用另外的编程语言，来简化应用和进程之间的交流。
 
-First, let's setup a listener on a channel via Redis using the `subscribe` method. We will place this method call within an [Artisan command](/docs/{{version}}/artisan) since calling the `subscribe` method begins a long-running process:
+首先，让我们通过Redis的 `subscribe` 方法来为一个频道安装监听器。我们将用 [Artisan命令](/docs/{{version}}/artisan) 来完成调用，因为调用 `subscribe` 方法会开启一个长时间运行的进程：
 
     <?php
 
@@ -139,7 +139,7 @@ First, let's setup a listener on a channel via Redis using the `subscribe` metho
         }
     }
 
-Now, we may publish messages to the channel using the `publish` method:
+现在，我们可以用 `publish` 向频道发布消息了：
 
     Route::get('publish', function () {
         // Route logic...
@@ -147,9 +147,9 @@ Now, we may publish messages to the channel using the `publish` method:
         Redis::publish('test-channel', json_encode(['foo' => 'bar']));
     });
 
-#### Wildcard Subscriptions
+#### 通配符订阅
 
-Using the `psubscribe` method, you may subscribe to a wildcard channel, which is useful for catching all messages on all channels. The `$channel` name will be passed as the second argument to the provided callback `Closure`:
+使用 `psubscribe` 方法可以订阅一个通配符频道，来方便捕获所有频道的所有消息。`$channel` 名作为第二个参数传入所提供的回调 `Closure` 中：
 
     Redis::psubscribe(['*'], function($message, $channel) {
         echo $message;
