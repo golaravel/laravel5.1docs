@@ -150,7 +150,7 @@ Laravel 框架自带了 `public/.htaccess` 文件用来从网址中删除 `index
 
 为了提升应用程序的执行速度，建议通过 Artisan 的 `config:cache` 命令将所有配置文件合并到一个文件中并缓存起来。这将合并你应用中的所有配置信息到单个文件中，这样它就能被框架更快地载入。
 
-建议将执行 `config:cache` 命令作为部署时的一个步骤。
+建议将执行 `php artisan config:cache` 命令作为产品部署流程中的一个步骤。由于开发过程中需要频繁修改配置项，因此不应该在本地开发时执行此命令。
 
 <a name="accessing-configuration-values"></a>
 ### 获取配置
