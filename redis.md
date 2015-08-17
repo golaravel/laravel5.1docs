@@ -13,7 +13,7 @@
 <a name="configuration"></a>
 ### 配置
 
-你的应用的Redis配置位于 `config/database.php` 配置文件中。在此文件中，你会看到 `redis` 数组包含了你所使用的Redis服务器：
+你的应用的 Redis 配置位于 `config/database.php` 配置文件中。在此文件中，你会看到 `redis` 数组包含了你所使用的 Redis 服务器：
 
     'redis' => [
 
@@ -27,20 +27,20 @@
 
     ],
 
-默认的服务器配置应该足以供开发使用。然而，你可以依照自己的环境自由地修改这个数组。简单地为每个Redis服务器指定名称，主机地址以及所使用的端口。
+默认的服务器配置应该足以供开发使用。然而，你可以依照自己的环境自由地修改这个数组。简单地为每个 Redis 服务器指定名称，主机地址以及所使用的端口。
 
-`cluster` 选项会告知Laravel Redis客户端在你的Redis节点上执行客户端的分片，允许你集中节点以及创建大量的可用内存。但请注意客户端分片不能处理故障转移；因此它主要适用于缓存另一个主存储器中的数据。
+`cluster` 选项会告知 Laravel Redis 客户端在你的 Redis 节点上执行客户端的分片，允许你集中节点以及创建大量的可用内存。但请注意客户端分片不能处理故障转移；因此它主要适用于缓存另一个主存储器中的数据。
 
-另外，你可以在Redis连接定义内定义一个 `options` 数组，这允许你指定一个Predis集合 [客户端选项](https://github.com/nrk/predis/wiki/Client-Options)。
+另外，你可以在 Redis 连接定义内定义一个 `options` 数组，这允许你指定一个 Predis 集合 [客户端选项](https://github.com/nrk/predis/wiki/Client-Options)。
 
-如果你的Redis服务器要求身份验证，你可把 `password` 配置项添加到你的Redis服务器配置数组中来提供密码。
+如果你的 Redis 服务器要求身份验证，你可把 `password` 配置项添加到你的 Redis 服务器配置数组中来提供密码。
 
-> **注意:** 如果你通过PECL安装了Redis的PHP扩展，你需要在 `config/app.php` 文件中为Redis重起一个别名。
+> **注意:** 如果你通过 PECL 安装了 Redis 的 PHP 扩展，你需要在 `config/app.php` 文件中为 Redis 重起一个别名。
 
 <a name="basic-usage"></a>
 ## 基本用法
 
-你可以通过 `Redis` [门面](/docs/{{version}}/facades) 调用许多方法来和Redis交互。`Redis` 门面支持动态方法，这意味着你可以通过门面调用任何 [Redis命令](http://redis.io/commands) 并且这些命令将直接传递给Redis。在这个例子中，我们将在 `Redis` 门面上调用 `get` 方法来使Redis调用 `GET` 命令：
+你可以通过 `Redis` [facade](/docs/{{version}}/facades) 调用许多方法来和 Redis 交互。`Redis`  facade 支持动态方法，这意味着你可以通过 facade 调用任何 [Redis命令](http://redis.io/commands) 并且这些命令将直接传递给 Redis。在这个例子中，我们将在 `Redis` facade 上调用 `get` 方法来使 Redis 调用 `GET` 命令：
 
     <?php
 
@@ -65,7 +65,7 @@
         }
     }
 
-当然，正如上面所提及的，你可在 `Redis` 门面上使用任意Redis命令。Laravel使用魔术方法来向Redis服务器传递命令，因此也可以简单地为Redis命令传递参数：
+当然，正如上面所提及的，你可在 `Redis` facade 上使用任意 Redis 命令。Laravel 使用魔术方法来向Redis服务器传递命令，因此也可以简单地为 Redis 命令传递参数：
 
     Redis::set('name', 'Taylor');
 
@@ -77,18 +77,18 @@
 
 #### 使用多Redis连接
 
-你可通过调用 `Redis::connection` 方法来获得一个Redis实例：
+你可通过调用 `Redis::connection` 方法来获得一个 Redis 实例：
 
     $redis = Redis::connection();
 
-这将为你返回默认的Redis实例。如果你没使用服务器集群，可以向 `connection` 方法传递服务器名来获得你配置好的特定服务器：
+这将为你返回默认的 Redis 实例。如果你没使用服务器集群，可以向 `connection` 方法传递服务器名来获得你配置好的特定服务器：
 
     $redis = Redis::connection('other');
 
 <a name="pipelining-commands"></a>
 ### 管道命令
 
-当你需要在一个操作中发送许多命令时，应该使用管道。`pipeline` 方法接受一个参数：一个接收Redis实例的 `Closure` (闭包)。你可向这个Redis实例发布所有的命令，它们会在单一操作中全被执行：
+当你需要在一个操作中发送许多命令时，应该使用管道。`pipeline` 方法接受一个参数：一个接收 Redis 实例的 `Closure` (闭包)。你可向这个Redis实例发布所有的命令，它们会在单一操作中全被执行：
 
     Redis::pipeline(function ($pipe) {
         for ($i = 0; $i < 1000; $i++) {
@@ -99,9 +99,9 @@
 <a name="pubsub"></a>
 ## 发布 / 订阅
 
-Laravel也为Redis的 `publish` 和 `subscribe` 命令提供了便捷的接口。这些Redis命令允许你在给定的 "频道" 中监听消息。你可从另一个应用将消息发布到该频道中，甚至是使用另外的编程语言，来简化应用和进程之间的交流。
+Laravel 也为 Redis 的 `publish` 和 `subscribe` 命令提供了便捷的接口。这些 Redis 命令允许你在给定的 "频道" 中监听消息。你可从另一个应用将消息发布到该频道中，甚至是使用另外的编程语言，来简化应用和进程之间的交流。
 
-首先，让我们通过Redis的 `subscribe` 方法来为一个频道安装监听器。我们将用 [Artisan命令](/docs/{{version}}/artisan) 来完成调用，因为调用 `subscribe` 方法会开启一个长时间运行的进程：
+首先，让我们通过 Redis 的 `subscribe` 方法来为一个频道安装监听器。我们将用 [Artisan命令](/docs/{{version}}/artisan) 来完成调用，因为调用 `subscribe` 方法会开启一个长时间运行的进程：
 
     <?php
 
