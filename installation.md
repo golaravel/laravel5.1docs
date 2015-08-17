@@ -27,7 +27,7 @@ Laravel 框架对系统环境有一些要求。当然，所有这些要求在 [L
 <a name="install-laravel"></a>
 ### 安装 Laravel
 
-Laravel 利用 [Composer](http://getcomposer.org) 来管理其自身的依赖包。因此，在使用 Laravel 之前，请务必确保在你的机器上已经安装了 Composer 。如果你是下载“一键安装包”的话，可以暂时不用安装 Composer，等熟悉 Laravel 了再回头摸索，免得上来就遇到钉子。
+Laravel 利用 [Composer](http://getcomposer.org)（[Composer 中文](http://www.phpcomposer.com)）来管理其自身的依赖包。因此，在使用 Laravel 之前，请务必确保在你的机器上已经安装了 Composer 。如果你是下载“一键安装包”的话，可以暂时不用安装 Composer，等熟悉 Laravel 了再回头摸索，免得上来就遇到钉子。
 
 #### 下载 Laravel 一键安装包
 
@@ -40,6 +40,8 @@ Laravel 利用 [Composer](http://getcomposer.org) 来管理其自身的依赖包
 - Laravel 5.x 版本都已经包含了一份 `.env` 配置文件，大家可以不用自己创建这个文件了。
 - 对于所有 Laravel 版本都已经设置了 Application key（也就是通过 `php artisan key:generate` 生成了秘钥），注意：最终上线时，请务必重新执行一次 `php artisan key:generate` 指令，以便重新生成秘钥。
 - 去除了所有视图文件中引用的 google 字体。
+
+> Windows 用户还可以参考[这篇文章](http://www.golaravel.com/post/install-and-run-laravel-5-x-on-windows/) 按步骤安装并运行 Laravel 。
 
 #### 通过 Laravel 安装工具安装 Laravel
 
