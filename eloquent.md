@@ -32,7 +32,7 @@ Laravel 所自带的 Eloquent ORM 是一个优美、简洁的 ActiveRecord 实�
 
     php artisan make:model User
 
-如果你希望在生成模型（model）的同时生成 [数据库将迁移](/docs/{{version}}/schema#database-migrations) ，可以通过添加 `--migration` 或 `-m` 参数来实现：
+如果你希望在生成模型（model）的同时生成 [数据库将迁移](/docs/{{version}}/migrations) ，可以通过添加 `--migration` 或 `-m` 参数来实现：
 
     php artisan make:model User --migration
 
@@ -77,7 +77,6 @@ Laravel 所自带的 Eloquent ORM 是一个优美、简洁的 ActiveRecord 实�
 
 #### 主键
 
-Eloquent will also assume that each table has a primary key column named `id`. You may define a `$primaryKey` property to override this convention.
 Eloquent 假定每一个数据表中都存在一个命名为 `id` 的列作为主键。你可以通过定义一个 `$primaryKey` 属性来明确指定一个主键。
 
 #### 时间戳
@@ -121,7 +120,7 @@ Eloquent 假定每一个数据表中都存在一个命名为 `id` 的列作为�
 <a name="retrieving-multiple-models"></a>
 ## 获取多个模型
 
-一旦你创建了一个模型（model）并将其[关联到了一个数据表](/docs/{{version}}/schema)，你就可以从数据库中获取数据了。将每一个 Eloquent 模型（model）想象为一个强大的[查询构造器](/docs/{{version}}/queries)，该查询构造器能够帮你通过模型（model）从数据库中查询需要的数据。例如：
+一旦你创建了一个模型（model）并将其[关联到了一个数据表](/docs/{{version}}/migrations#writing-migrations)，你就可以从数据库中获取数据了。将每一个 Eloquent 模型（model）想象为一个强大的[查询构造器](/docs/{{version}}/queries)，该查询构造器能够帮你通过模型（model）从数据库中查询需要的数据。例如：
 
     <?php
 
@@ -212,7 +211,7 @@ If the exception is not caught, a `404` HTTP response is automatically sent back
 <a name="retrieving-aggregates"></a>
 ### Retrieving Aggregates
 
-Of course, you may also use the query builder aggregate functions such as `count`, `sum`, `max`, and the other aggregate functions provided by the [query builder](/docs/{{version}}/queries). These methods return the appropriate scalar value instead of a full model instance:
+Of course, you may also use `count`, `sum`, `max`, and other [aggregate functions](/docs/{{version}}/queries#aggregates) provided by the [query builder](/docs/{{version}}/queries). These methods return the appropriate scalar value instead of a full model instance:
 
     $count = App\Flight::where('active', 1)->count();
 
@@ -280,7 +279,7 @@ Of course, you may also use the query builder aggregate functions such as `count
 
 You may also use the `create` method to save a new model in a single line. The inserted model instance will be returned to you from the method. However, before doing so, you will need to specify either a `fillable` or `guarded` attribute on the model, as all Eloquent models protect against mass-assignment.
 
-A mass-assignment vulnerability occurs when user's pass unexpected HTTP parameters through a request, and then that parameter changes a column in your database you did not expect. For example, a malicious user might send an `is_admin` parameter through an HTTP request, which is then mapped onto your model's `create` method, allowing the user to escalate themselves to an administrator.
+A mass-assignment vulnerability occurs when a user passes an unexpected HTTP parameter through a request, and that parameter changes a column in your database you did not expect. For example, a malicious user might send an `is_admin` parameter through an HTTP request, which is then mapped onto your model's `create` method, allowing the user to escalate themselves to an administrator.
 
 So, to get started, you should define which model attributes you want to make mass assignable. You may do this using the `$fillable` property on the model. For example, let's make the `name` attribute of our `Flight` model mass assignable:
 
@@ -385,7 +384,7 @@ In addition to actually removing records from your database, Eloquent can also "
         protected $dates = ['deleted_at'];
     }
 
-Of course, you should add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/schema) contains a helper method to create this column:
+Of course, you should add the `deleted_at` column to your database table. The Laravel [schema builder](/docs/{{version}}/migrations) contains a helper method to create this column:
 
     Schema::table('flights', function ($table) {
         $table->softDeletes();
@@ -486,7 +485,7 @@ Scopes allow you to define common sets of constraints that you may easily re-use
 
 Once the scope has been defined, you may call the scope methods when querying the model. However, you do not need to include the `scope` prefix when calling the method. You can even chain calls to various scopes, for example:
 
-    $users = App\User::popular()->women()->orderBy('created_at')->get();
+    $users = App\User::popular()->active()->orderBy('created_at')->get();
 
 #### Dynamic Scopes
 

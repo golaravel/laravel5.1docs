@@ -48,7 +48,7 @@ Blade 是 Laravel 提供的一个既简单又强大的模板引擎。和其他�
 
 定义子页面时，你需要使用 Blade 提供的 `@extends` 指令来为子页面指定其所“继承”的页面布局模板。Views which `@extends` a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
-    <!-- Stored in resources/views/layouts/child.blade.php -->
+    <!-- Stored in resources/views/child.blade.php -->
 
     @extends('layouts.master')
 

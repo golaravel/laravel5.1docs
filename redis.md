@@ -73,7 +73,7 @@
 
 或者，也可用 `command` 方法向服务器传递命令，该方法接收命令名称作为第一个参数，数组作为第二个参数：
 
-    $values = Redis::command('lrange', [5, 10]);
+    $values = Redis::command('lrange', ['name', 5, 10]);
 
 #### 使用多Redis连接
 

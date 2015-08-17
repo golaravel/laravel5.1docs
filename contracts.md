@@ -34,7 +34,7 @@ Laravel 中的 [facades](/docs/{{version}}/facades) 提供了一个简单的方�
     class Repository
     {
         /**
-         * The cache.
+         * The cache instance.
          */
         protected $cache;
 
@@ -77,6 +77,11 @@ Laravel 中的 [facades](/docs/{{version}}/facades) 提供了一个简单的方�
 
     class Repository
     {
+        /**
+         * The cache instance.
+         */
+        protected $cache;
+
         /**
          * Create a new repository instance.
          *

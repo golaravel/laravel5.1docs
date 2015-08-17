@@ -172,9 +172,9 @@ If you are using the Amazon S3 filesystem driver, you will need to update the co
 
 ### 全新安装，然后迁移
 
-推荐的升级方式是建立一个全新的 Laravel `5.0` 项目，然后复制您在 `4.2` 的文件到此新的应用程序，这将包含控制器、路由、Eloquent 模型、Artisan 命令（Asset）、资源和关于此应用程序的其他特定文件。
+推荐的升级方式是建立一个全新的 Laravel `5.0` 项目，然后复制您在 `4.2` 的文件到此新的应用程序中，包含控制器、路由、Eloquent 模型、Artisan 命令（Asset）、资源和关于此应用程序的其他特定文件。
 
-最开始，[安装新的 Laravel 5 应用程序](/docs/{{version}}/installation)到新的本地目录下，我们将详细探讨迁移各部分的过程。
+首先[安装新的 Laravel 5 应用程序](/docs/{{version}}/installation)到一个新的本地目录下。先不要安装任何高于 5.0 的版本，因为我们首先要完成升级到 5.0 的流程。我们将详细探讨迁移各部分的过程。
 
 ### Composer 依赖与组件
 
