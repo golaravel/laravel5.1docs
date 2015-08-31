@@ -1,5 +1,6 @@
 # Upgrade Guide
 
+- [升级到 5.1.11](#upgrade-5.1.11)
 - [升级到 5.1.0](#upgrade-5.1.0)
 - [升级到 5.0.16](#upgrade-5.0.16)
 - [从 4.2 升级到 5.0](#upgrade-5.0)
@@ -7,6 +8,66 @@
 - [从低于或等于 4.1.x 升级到 4.1.29](#upgrade-4.1.29)
 - [从低于或等于 4.1.25 升级到 4.1.26](#upgrade-4.1.26)
 - [从 4.0 升级到 4.1](#upgrade-4.1)
+
+<a name="upgrade-5.1.11"></a>
+## 升级到 5.1.11
+
+Laravel 5.1.11 includes support for [authorization](/docs/{{version}}/authorization) and [policies](/docs/{{version}}/authorization#policies). Incorporating these new features into your existing Laravel 5.1 applications is simple.
+
+> **Note:** These upgrades are **optional**, and ignoring them will not affect your application.
+
+#### Create The Policies Directory
+
+First, create an empty `app/Policies` directory within your application.
+
+#### Create / Register The AuthServiceProvider & Gate Facade
+
+Create a `AuthServiceProvider` within your `app/Providers` directory. You may copy the contents of the default provider [from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php). After creating the provider, be sure to register it in your `app.php` configuration file's `providers` array.
+
+Also, you should register the `Gate` facade in your `app.php` configuration file's `aliases` array:
+
+    'Gate' => Illuminate\Support\Facades\Gate::class,
+
+#### Update The User Model
+
+Secondly, use the `Illuminate\Foundation\Auth\Access\Authorizable` trait and `Illuminate\Contracts\Auth\Access\Authorizable` contract on your `App\User` model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Auth\Authenticatable;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Auth\Passwords\CanResetPassword;
+    use Illuminate\Foundation\Auth\Access\Authorizable;
+    use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+    use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+    use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+
+    class User extends Model implements AuthenticatableContract,
+                                        AuthorizableContract,
+                                        CanResetPasswordContract
+    {
+        use Authenticatable, Authorizable, CanResetPassword;
+    }
+
+#### Update The Base Controller
+
+Next, update your base `App\Http\Controllers\Controller` controller to use the `Illuminate\Foundation\Auth\Access\AuthorizesRequests` trait:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Foundation\Bus\DispatchesJobs;
+    use Illuminate\Routing\Controller as BaseController;
+    use Illuminate\Foundation\Validation\ValidatesRequests;
+    use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+    abstract class Controller extends BaseController
+    {
+        use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    }
 
 <a name="upgrade-5.1.0"></a>
 ## 升级到 5.1.0
