@@ -27,7 +27,7 @@ Laravel 框架对系统环境有一些要求。当然，所有这些要求在 [L
 <a name="install-laravel"></a>
 ### 安装 Laravel
 
-Laravel 利用 [Composer](http://getcomposer.org) 来管理其自身的依赖包。因此，在使用 Laravel 之前，请务必确保在你的机器上已经安装了 Composer 。如果你是下载“一键安装包”的话，可以暂时不用安装 Composer，等熟悉 Laravel 了再回头摸索，免得上来就遇到钉子。
+Laravel 利用 [Composer](http://getcomposer.org)（[Composer 中文](http://www.phpcomposer.com)）来管理其自身的依赖包。因此，在使用 Laravel 之前，请务必确保在你的机器上已经安装了 Composer 。如果你是下载“一键安装包”的话，可以暂时不用安装 Composer，等熟悉 Laravel 了再回头摸索，免得上来就遇到钉子。
 
 #### 下载 Laravel 一键安装包
 
@@ -40,6 +40,8 @@ Laravel 利用 [Composer](http://getcomposer.org) 来管理其自身的依赖包
 - Laravel 5.x 版本都已经包含了一份 `.env` 配置文件，大家可以不用自己创建这个文件了。
 - 对于所有 Laravel 版本都已经设置了 Application key（也就是通过 `php artisan key:generate` 生成了秘钥），注意：最终上线时，请务必重新执行一次 `php artisan key:generate` 指令，以便重新生成秘钥。
 - 去除了所有视图文件中引用的 google 字体。
+
+> Windows 用户还可以参考[这篇文章](http://www.golaravel.com/post/install-and-run-laravel-5-x-on-windows/) 按步骤安装并运行 Laravel 。
 
 #### 通过 Laravel 安装工具安装 Laravel
 
@@ -150,7 +152,7 @@ Laravel 框架自带了 `public/.htaccess` 文件用来从网址中删除 `index
 
 为了提升应用程序的执行速度，建议通过 Artisan 的 `config:cache` 命令将所有配置文件合并到一个文件中并缓存起来。这将合并你应用中的所有配置信息到单个文件中，这样它就能被框架更快地载入。
 
-建议将执行 `config:cache` 命令作为部署时的一个步骤。
+建议将执行 `php artisan config:cache` 命令作为产品部署流程中的一个步骤。由于开发过程中需要频繁修改配置项，因此不应该在本地开发时执行此命令。
 
 <a name="accessing-configuration-values"></a>
 ### 获取配置

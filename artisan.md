@@ -276,15 +276,15 @@ Artisan 是 Laravel 中自带的命令行工具的名称。它提供了一些对
 
     $users = App\User::all();
 
-    $this->output->progressStart(count($users));
+    $bar = $this->output->createProgressBar(count($users));
 
     foreach ($users as $user) {
         $this->performTask($user);
 
-        $this->output->progressAdvance();
+        $bar->advance();
     }
 
-    $this->output->progressFinish();
+    $bar->finish();
 
 更高级的选项，可以查看 [Symfony Progress Bar component documentation](http://symfony.com/doc/2.7/components/console/helpers/progressbar.html).
 

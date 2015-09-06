@@ -14,7 +14,7 @@
 
 ## 翻译任务分配及进度
 
-### 王赛
+### [王赛](https://github.com/wangsai)
 
 - [x] installation.md
 - [x] encryption.md
@@ -25,15 +25,21 @@
 - [ ] upgrade.md
 - [x] contracts.md
 
-### kevendreamsct
-- [ ] controllers.md
+### [kevendreamsct](https://github.com/kevendreamsct)
+- [x] controllers.md
 
-### Micooz
+### [Micooz](https://github.com/micooz)
 - [x] seeding.md
 - [x] helpers.md
-- [ ] redis.md
+- [x] redis.md
 
-### friparia
+### [friparia](https://github.com/friparia)
 - [x] artisan.md
-- [ ] middleware.md
+- [x] middleware.md
 - [ ] authentication.md
+
+### [IUsual](https://github.com/IUsual)
+- [x] views.md
+
+### [Hanccc](https://github.com/Hanccc)
+- [ ] migrations.md

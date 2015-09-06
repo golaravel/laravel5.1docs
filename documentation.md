@@ -23,6 +23,7 @@
     - [Facade](/docs/{{version}}/facades)
 - 系统服务
     - [认证](/docs/{{version}}/authentication)
+    - [授权](/docs/{{version}}/authorization)
     - [Artisan 控制台](/docs/{{version}}/artisan)
     - [计费](/docs/{{version}}/billing)
     - [缓存](/docs/{{version}}/cache)

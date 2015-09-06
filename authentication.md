@@ -439,14 +439,17 @@ Laravel 包含了一个实现了重置用户密码方法的 `Auth\PasswordContro
         <input type="hidden" name="token" value="{{ $token }}">
 
         <div>
+            Email
             <input type="email" name="email" value="{{ old('email') }}">
         </div>
 
         <div>
+            Password
             <input type="password" name="password">
         </div>
 
         <div>
+            Confirm Password
             <input type="password" name="password_confirmation">
         </div>
 
@@ -507,6 +510,7 @@ Laravel 包含了一个实现了重置用户密码方法的 `Auth\PasswordContro
 
     namespace App\Http\Controllers;
 
+    use Socialite;
     use Illuminate\Routing\Controller;
 
     class AuthController extends Controller
@@ -541,11 +545,13 @@ Laravel 包含了一个实现了重置用户密码方法的 `Auth\PasswordContro
 
 当然，你需要定义好你的控制器方法的路由：
 
-    <?php
-
         Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
         Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
 
+A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
+
+    return Socialite::driver('google')
+                ->with(['hd' => 'example.com'])->redirect();
 
 #### 接收用户详情
 
@@ -635,7 +641,6 @@ Laravel 包含了一个实现了重置用户密码方法的 `Auth\PasswordContro
 `updateRememberToken` 方法用新的 `$token` 更新 `$user` 的 `remember_token` 字段。新 token 可以是一个通过成功的"记住我"登录而新生成的 token，或者当用户登出时置为空。
 
 `retrieveByCredentials` 方法接受一个当尝试在应用程序中注册时传给 `Auth::attemp` 方法的认证数组。这个方法应当继续“查询”下层的持久存储用户是否存在。典型地，这个方法会运行一个在 `$credentials['username']` 的 "where" 条件查询。这个方法应该返回一个 `UserInterface` 的实现。**这个方法不应该去做任何的密码验证或者认证。**
-
 
 `validateCredentials` 方法应当比较传入的 `$user` 和 `$credentials` 来进行用户认证。例如，这个方法可能将 `$user->getAuthPassword()` 字符串和一个 `$credentials['password']` 的 `Hash::make` 进行比较。这个方法应当仅仅验证用户是否有权限登录。并且返回一个布尔值。
 

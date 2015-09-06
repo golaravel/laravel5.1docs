@@ -166,7 +166,7 @@ Laravel 框架已经自带了一些中间件，包括维护、身份验证、 CS
 有时候中间件可能需要在一个请求已经发送给浏览器后做一些工作。例如， Laravel 包含的 "session" 中间件需要在响应发送给用户 _之后_ 保存 session 数据。你需要将中间件定义为 "可终止的" 来完成这件事情。 
 
     <?php
-    
+
     namespace Illuminate\Session\Middleware;
 
     use Closure;
@@ -184,5 +184,6 @@ Laravel 框架已经自带了一些中间件，包括维护、身份验证、 CS
         }
     }
 
-`terminate` 方法会收到请求和相应。一旦你已经定义了一个可终止的中间件，你需要将它添加到 HTTP kernel 的全局中间件列表中去。
+`terminate` 方法会收到请求（request）和响应（response）。一旦你已经定义了一个可终止的中间件，你需要将它添加到 HTTP kernel 的全局中间件列表中去。
 
+当调用你的中间件的 `terminate` 方法时，Laravel 将通过 [服务容器](/docs/{{version}}/container) 解析并创建一个全新的中间件实例。如果你希望在 `handle` 和 `terminate` 方法中引用同一个中间件实例的话，请使用服务容器的 `singleton` 方法来注册中间件。

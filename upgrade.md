@@ -1,5 +1,6 @@
 # Upgrade Guide
 
+- [升级到 5.1.11](#upgrade-5.1.11)
 - [升级到 5.1.0](#upgrade-5.1.0)
 - [升级到 5.0.16](#upgrade-5.0.16)
 - [从 4.2 升级到 5.0](#upgrade-5.0)
@@ -7,6 +8,66 @@
 - [从低于或等于 4.1.x 升级到 4.1.29](#upgrade-4.1.29)
 - [从低于或等于 4.1.25 升级到 4.1.26](#upgrade-4.1.26)
 - [从 4.0 升级到 4.1](#upgrade-4.1)
+
+<a name="upgrade-5.1.11"></a>
+## 升级到 5.1.11
+
+Laravel 5.1.11 includes support for [authorization](/docs/{{version}}/authorization) and [policies](/docs/{{version}}/authorization#policies). Incorporating these new features into your existing Laravel 5.1 applications is simple.
+
+> **Note:** These upgrades are **optional**, and ignoring them will not affect your application.
+
+#### Create The Policies Directory
+
+First, create an empty `app/Policies` directory within your application.
+
+#### Create / Register The AuthServiceProvider & Gate Facade
+
+Create a `AuthServiceProvider` within your `app/Providers` directory. You may copy the contents of the default provider [from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php). After creating the provider, be sure to register it in your `app.php` configuration file's `providers` array.
+
+Also, you should register the `Gate` facade in your `app.php` configuration file's `aliases` array:
+
+    'Gate' => Illuminate\Support\Facades\Gate::class,
+
+#### Update The User Model
+
+Secondly, use the `Illuminate\Foundation\Auth\Access\Authorizable` trait and `Illuminate\Contracts\Auth\Access\Authorizable` contract on your `App\User` model:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Auth\Authenticatable;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Auth\Passwords\CanResetPassword;
+    use Illuminate\Foundation\Auth\Access\Authorizable;
+    use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+    use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+    use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+
+    class User extends Model implements AuthenticatableContract,
+                                        AuthorizableContract,
+                                        CanResetPasswordContract
+    {
+        use Authenticatable, Authorizable, CanResetPassword;
+    }
+
+#### Update The Base Controller
+
+Next, update your base `App\Http\Controllers\Controller` controller to use the `Illuminate\Foundation\Auth\Access\AuthorizesRequests` trait:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Foundation\Bus\DispatchesJobs;
+    use Illuminate\Routing\Controller as BaseController;
+    use Illuminate\Foundation\Validation\ValidatesRequests;
+    use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+    abstract class Controller extends BaseController
+    {
+        use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    }
 
 <a name="upgrade-5.1.0"></a>
 ## 升级到 5.1.0
@@ -172,9 +233,9 @@ If you are using the Amazon S3 filesystem driver, you will need to update the co
 
 ### 全新安装，然后迁移
 
-推荐的升级方式是建立一个全新的 Laravel `5.0` 项目，然后复制您在 `4.2` 的文件到此新的应用程序，这将包含控制器、路由、Eloquent 模型、Artisan 命令（Asset）、资源和关于此应用程序的其他特定文件。
+推荐的升级方式是建立一个全新的 Laravel `5.0` 项目，然后复制您在 `4.2` 的文件到此新的应用程序中，包含控制器、路由、Eloquent 模型、Artisan 命令（Asset）、资源和关于此应用程序的其他特定文件。
 
-最开始，[安装新的 Laravel 5 应用程序](/docs/{{version}}/installation)到新的本地目录下，我们将详细探讨迁移各部分的过程。
+首先[安装新的 Laravel 5 应用程序](/docs/{{version}}/installation)到一个新的本地目录下。先不要安装任何高于 5.0 的版本，因为我们首先要完成升级到 5.0 的流程。我们将详细探讨迁移各部分的过程。
 
 ### Composer 依赖与组件
 

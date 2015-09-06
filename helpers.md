@@ -51,6 +51,7 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 [base_path](#method-base-path)
 [config_path](#method-config-path)
 [database_path](#method-database-path)
+[elixir](#method-elixir)
 [public_path](#method-public-path)
 [storage_path](#method-storage-path)
 </div>
@@ -81,6 +82,8 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 
 <div class="collection-method-list" markdown="1">
 [action](#method-action)
+[asset](#method-asset)
+[secure_asset](#method-secure-asset)
 [route](#method-route)
 [url](#method-url)
 </div>
@@ -95,7 +98,6 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
 [dd](#method-dd)
-[elixir](#method-elixir)
 [env](#method-env)
 [event](#method-event)
 [factory](#method-factory)
@@ -397,6 +399,13 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 
     $path = database_path();
 
+<a name="method-elixir"></a>
+#### `elixir()` {#collection-method}
+
+The `elixir` function gets the path to the versioned [Elixir](/docs/{{version}}/elixir) file:
+
+    elixir($file);
+
 <a name="method-public-path"></a>
 #### `public_path()` {#collection-method}
 
@@ -444,6 +453,8 @@ function returns the fully qualified path to the `storage` directory:
 `e` 函数为给定的字串调用 `htmlentities` ：
 
     echo e('<html>foo</html>');
+
+    // &lt;html&gt;foo&lt;/html&gt;
 
 <a name="method-ends-with"></a>
 #### `ends_with()` {#collection-method}
@@ -588,6 +599,20 @@ function generates a URL friendly "slug" from the given string:
 
     $url = action('UserController@profile', ['id' => 1]);
 
+<a name="method-asset"></a>
+#### `asset()` {#collection-method}
+
+Generate a URL for an asset using the current scheme of the request (HTTP or HTTPS):
+
+	$url = asset('img/photo.jpg');
+
+<a name="method-secure-asset"></a>
+#### `secure_asset()` {#collection-method}
+
+Generate a URL for an asset using HTTPS:
+
+	echo secure_asset('foo/bar.zip', $title, $attributes = []);
+
 <a name="method-route"></a>
 #### `route()` {#collection-method}
 
@@ -641,6 +666,10 @@ function generates a URL friendly "slug" from the given string:
 
     $value = config('app.timezone', $default);
 
+The `config` helper may also be used to set configuration variables at runtime by passing an array of key / value pairs:
+
+    config(['app.debug' => true]);
+
 <a name="method-csrf-field"></a>
 #### `csrf_field()` {#collection-method}
 
@@ -661,13 +690,6 @@ function generates a URL friendly "slug" from the given string:
 `dd` 函数输出给定变量然后结束脚本的执行：
 
     dd($value);
-
-<a name="method-elixir"></a>
-#### `elixir()` {#collection-method}
-
-`elixir` 函数获取包含版本号的 [Elixir](/docs/{{version}}/elixir) 文件：
-
-    elixir($file);
 
 <a name="method-env"></a>
 #### `env()` {#collection-method}
@@ -691,7 +713,7 @@ function generates a URL friendly "slug" from the given string:
 
 `factory` 函数为给定类创建一个模型工厂。当在 [testing](/docs/{{version}}/testing#model-factories) 或 [seeding](/docs/{{version}}/seeding#using-model-factories) 时可使用:
 
-    $user = factory('App\User')->make();
+    $user = factory(App\User::class)->make();
 
 <a name="method-method-field"></a>
 #### `method_field()` {#collection-method}
@@ -705,7 +727,7 @@ function generates a URL friendly "slug" from the given string:
 <a name="method-old"></a>
 #### `old()` {#collection-method}
 
-`old` 函数 [取回](/docs/{{version}}/requests#retrieving-input) 一个闪存入session的旧输入值：
+`old` 函数用于 [取回](/docs/{{version}}/requests#retrieving-input) 一个闪存入 session 的旧输入值：
 
     $value = old('value');
 
