@@ -25,7 +25,7 @@
 <a name="introduction"></a>
 ## 简介
 
-Laravel 让实现认证机制变得非常简单。事实上，几乎所有的配置已经默认完成了。认证的配置文件放在 `config/auth.php` ，配置文件包含了一些为了修改认证服务行为并且有着良好注释的选项。
+Laravel 让实现认证机制变得非常简单。事实上，几乎所有的配置已经默认完成了。认证的配置文件放在 `config/auth.php` 文件中 ，配置文件包含了一些为了修改认证服务行为并且有着良好注释的选项。
 
 ### 数据库注意事项
 
@@ -141,7 +141,7 @@ Laravel 预设了两个和认证相关的控制器，这两个控制器位于 `A
 <a name="retrieving-the-authenticated-user"></a>
 ### 获取登录信息
 
-你可以通过 `Auth` facade 来访问已经认证了得用户：
+你可以通过 `Auth` facade 来访问已经认证了的用户：
 
     $user = Auth::user();
 
@@ -616,7 +616,7 @@ A number of OAuth providers support optional parameters in the redirect request.
 
 ### 用户提供者 Contract
 
-`Illuminate\Contracts\Auth\UserProvider` 实现仅仅负责从持久化存储(例如 MySQL 和 Riak 等等)中取 `Illuminate\Contracts\Auth\Authenticatable` 的实现。这两个接口允许 Laravel 认证机制不管用户数据如何存储或者什么类代表而继续工作。
+`Illuminate\Contracts\Auth\UserProvider` 实现仅仅负责从持久化存储(例如 MySQL 和 Riak 等等)中取 `Illuminate\Contracts\Auth\Authenticatable` 的实现。这两个接口允许 Laravel 认证机制不管用户数据如何存储或者由什么类代表而继续工作。
 
 让我们看一眼 `Illuminate\Contracts\Auth\UserProvider` contract：
 
@@ -662,4 +662,4 @@ A number of OAuth providers support optional parameters in the redirect request.
 
     }
 
-这个接口非常简单。`getAuthIdentifier` 方法应当返回一个用户的“主键”。在 MySQL 后端，同样的，这个会是一个自增的主键。 `getAuthPassword` 应当返回一个用户哈希过后的密码。这个接口允许认证系统和任何 User 类进行工作，而不用关心 ORM 或者所使用的是何种存储层。默认地， Laravel在 `app` 文件夹下包含了一个实现了这个接口的 `User` 类， 所以你可以查看这个类作为一个实现例子。
+这个接口非常简单。`getAuthIdentifier` 方法应当返回一个用户的“主键”。在 MySQL 后端，同样的，这个会是一个自增的主键。 `getAuthPassword` 应当返回一个用户哈希过后的密码。这个接口允许认证系统和任何 User 类进行工作，而不用关心 ORM 或者所使用的是何种存储层。默认地， Laravel 在 `app` 文件夹下包含了一个实现了这个接口的 `User` 类， 所以你可以查看这个类作为一个实现例子。
