@@ -1,5 +1,4 @@
-# Authentication
-认证
+# 认证
 
 - [简介](#introduction)
 - [认证快速入门](#authentication-quickstart)
