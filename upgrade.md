@@ -22,7 +22,7 @@ First, create an empty `app/Policies` directory within your application.
 
 #### Create / Register The AuthServiceProvider & Gate Facade
 
-Create a `AuthServiceProvider` within your `app/Providers` directory. You may copy the contents of the default provider [from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php). After creating the provider, be sure to register it in your `app.php` configuration file's `providers` array.
+Create a `AuthServiceProvider` within your `app/Providers` directory. You may copy the contents of the default provider [from GitHub](https://raw.githubusercontent.com/laravel/laravel/master/app/Providers/AuthServiceProvider.php). Remember to change the provider's namespace if your application is using a custom namespace. After creating the provider, be sure to register it in your `app.php` configuration file's `providers` array.
 
 Also, you should register the `Gate` facade in your `app.php` configuration file's `aliases` array:
 
@@ -150,6 +150,12 @@ Previously, the storage format for Eloquent date fields could be modified by ove
 The date format is also now applied when serializing a model to an `array` or JSON. This may change the format of your JSON serialized date fields when migrating from Laravel 5.0 to 5.1. To set a specific date format for serialized models, you may override the `serializeDate(DateTime $date)` method on your model. This method allows you to have granular control over the formatting of serialized Eloquent date fields without changing their storage format.
 
 ### The Collection Class
+
+#### The `sort` Method
+
+The `sort` method now returns a fresh collection instance instead of modifying the existing collection:
+
+    $collection = $collection->sort($callback);
 
 #### The `sortBy` Method
 

@@ -182,6 +182,8 @@ Blade 提供的 `@include` 指令允许你方便地在一个视图中引入另�
 
     @include('view.name', ['some' => 'data'])
 
+> **Note:** You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached view.
+
 #### Rendering Views For Collections
 
 You may combine loops and includes into one line with Blade's `@each` directive:

@@ -63,13 +63,19 @@
 
     Route::get('foo', ['uses' => 'FooController@method', 'as' => 'name']);
 
-一旦你给控制器路由分配了一个名称，为控制器动作生成 URL 将会变得非常简单。使用 `action` 助手方法来为控制器动作生成 URL。此外，我们只需要指定紧跟基目录空间 `App\Http\Controllers` 后面的控制器类名即可：
-
-    $url = action('FooController@method');
+#### URL 到控制器动作的转化
 
 你也可以使用 `route` 助手方法来为一个命名过的控制器路由生成 URL：
 
     $url = route('name');
+
+You may also use the `action` helper method to generate a URL using the controller's class and method names. Again, we only need to specify the part of the controller class name that comes after the base `App\Http\Controllers` namespace:
+
+    $url = action('FooController@method');
+
+You may access the name of the controller action being run using the `currentRouteAction` method on the `Route` facade:
+
+	$action = Route::currentRouteAction();
 
 <a name="controller-middleware"></a>
 ## Controller Middleware 控制器中间件
@@ -339,7 +345,9 @@ Laravel [服务容器](/docs/{{version}}/container) 是用来转换所有 Larave
 <a name="route-caching"></a>
 ## 路由缓存
 
-如果你的应用软件只使用控制器的基本路由，那么你可以充分利用 Laravel 的路由缓存。使用路由缓存可以极大的减少应用程序注册所有路由的时间。在某些情况下，路由的注册过程可以提速100倍以上！那么要怎么样生成路由缓存呢？你只需要执行 Artisan 命令 `route:cache` 即可：
+> **Note:** Route caching does not work with Closure based routes. To use route caching, you must convert any Closure routes to use controller classes.
+
+If your application is exclusively using controller based routes, you may take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it takes to register all of your application's routes. In some cases, your route registration may even be up to 100x faster! To generate a route cache, just execute the `route:cache` Artisan command:
 
     php artisan route:cache
 

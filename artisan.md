@@ -52,9 +52,8 @@ Artisan 是 Laravel 中自带的命令行工具的名称。它提供了一些对
     use App\User;
     use App\DripEmailer;
     use Illuminate\Console\Command;
-    use Illuminate\Foundation\Inspiring;
 
-    class Inspire extends Command
+    class SendEmails extends Command
     {
         /**
          * The name and signature of the console command.
@@ -109,7 +108,7 @@ Artisan 是 Laravel 中自带的命令行工具的名称。它提供了一些对
 
 在写控制台命令的代码的时候时，收集用户输入的参数或选项是一项很普遍的事情。Laravel 通过使用您命令中的 `signature` 属性来使得定义您所期望的用户输入的形式变得非常方便。`signature` 属性允许您用一种简洁、富有表现力、仿路由的语法去定义命令的名称、参数、和选项。
 
-所有用户提供的参数和选项被大括号所包裹，如下所示：
+所有用户提供的参数和选项被大括号所包裹。例如下面的命令实例中，定义了一个**必填(required)** 的参数 `user`：
 
     /**
      * The name and signature of the console command.
@@ -118,7 +117,7 @@ Artisan 是 Laravel 中自带的命令行工具的名称。它提供了一些对
      */
     protected $signature = 'email:send {user}';
 
-在这个例子中，命令定义了一个**必填**的参数: `user`。您也可以将其改为可选参数或者为可选参数定义一个默认值：
+您也可以将其改为可选参数并为可选参数定义一个默认值：
 
     // Optional argument...
     email:send {user?}
@@ -126,7 +125,7 @@ Artisan 是 Laravel 中自带的命令行工具的名称。它提供了一些对
     // Optional argument with default value...
     email:send {user=foo}
 
-选项，像参数一样，也是用户输入的一种。但是，当它们在命令行中指定时，它们的前缀是由两个连字符构成。我们可以在 `signature` 中像这样定义选项：
+选项，像参数一样，也是一种用户输入。但是，当在命令行指定时，需要在前面添加两个连字符（`--`）。我们可以在 `signature` 中像这样定义选项：
 
     /**
      * The name and signature of the console command.
@@ -155,6 +154,10 @@ Artisan 是 Laravel 中自带的命令行工具的名称。它提供了一些对
 您也可以像这样来给选项的值赋一个默认值
 
     email:send {user} {--queue=default}
+
+To assign a shortcut when defining an option, you may specify it before the option name and use a | delimiter to separate the shortcut from the full option name:
+
+    email:send {user} {--Q|queue}
 
 #### 输入描述
 
@@ -242,7 +245,7 @@ Artisan 是 Laravel 中自带的命令行工具的名称。它提供了一些对
 <a name="writing-output"></a>
 ### 输出信息
 
-使用 `info`，`comment`，`question` 和 `error` 方法将输出显示在控制台上。每一种方法会得到一个对应的 ANSI 颜色。
+使用 `line`、`info`、`comment`、`question` 和 `error` 方法将输出显示在控制台上。每一种方法都会根据其意图得到一个对应的 ANSI 颜色。
 
 使用 `info` 方法来向用户显示信息。典型的，这个将会在控制台显示绿色字符：
 
@@ -260,7 +263,11 @@ Artisan 是 Laravel 中自带的命令行工具的名称。它提供了一些对
 
     $this->error('Something went wrong!');
 
-#### 输出表格
+如果你希望在命令行输出普通内容，请使用 `line` 方法。`line` 方法并不会为输出的内容着色：
+
+    $this->line('Display this on the screen');
+
+#### 表格布局
 
 使用 `table` 方法会让您正确地格式化数据的行列。仅需向方法传入表格的头部。表格的宽和高将会由给出的数据动态的计算出来：
 
@@ -296,7 +303,7 @@ Artisan 是 Laravel 中自带的命令行工具的名称。它提供了一些对
 在这个文件中，您会在 `commands` 属性中发现一个命令的列表。简单地将您的命令的类名添加到列表中就可以注册您的命令了。当 Artisan 启动的时候，所有在这个属性中列出来的命令将会被 [service container](/docs/{{version}}/container) 解析，并且在 Artisan 中注册。
 
     protected $commands = [
-        'App\Console\Commands\SendEmails'
+        Commands\SendEmails::class
     ];
 
 <a name="calling-commands-via-code"></a>

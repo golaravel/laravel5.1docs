@@ -6,6 +6,9 @@
 - 安装设置
     - [安装](/docs/{{version}}/installation)
     - [Homestead](/docs/{{version}}/homestead)
+- 教程
+    - [入门学习任务](/docs/{{version}}/quickstart)
+    - [中级学习任务](/docs/{{version}}/quickstart-intermediate)
 - 基础知识
     - [路由](/docs/{{version}}/routing)
     - [中间件](/docs/{{version}}/middleware)

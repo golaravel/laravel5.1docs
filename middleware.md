@@ -120,6 +120,18 @@ Laravel 框架已经自带了一些中间件，包括维护、身份验证、 CS
         //
     }]);
 
+Use an array to assign multiple middleware to the route:
+
+    Route::get('/', ['middleware' => ['first', 'second'], function () {
+        //
+    }]);
+
+Instead of using an array, you may also chain the `middleware` method onto the route definition:
+
+    Route::get('/', function () {
+        //
+    }])->middleware(['first', 'second']);
+
 <a name="middleware-parameters"></a>
 ## 中间件参数
 

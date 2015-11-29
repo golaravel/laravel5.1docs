@@ -42,7 +42,7 @@ The simplest way to determine if a user may perform a given action is to define 
 	     */
 	    public function boot(GateContract $gate)
 	    {
-	        parent::registerPolicies($gate);
+	        $this->registerPolicies($gate);
 
 	        $gate->define('update-post', function ($user, $post) {
 	        	return $user->id === $post->user_id;
@@ -56,7 +56,27 @@ Note that we did not check if the given `$user` is not `NULL`. The `Gate` will a
 
 In addition to registering `Closures` as authorization callbacks, you may register class methods by passing a string containing the class name and the method. When needed, the class will be resolved via the [service container](/docs/{{version}}/container):
 
-    $gate->define('update-post', 'PostPolicy@update');
+    $gate->define('update-post', 'Class@method');
+
+<a name="intercepting-all-checks"></a>
+<a name="intercepting-authorization-checks"></a>
+#### Intercepting Authorization Checks
+
+Sometimes, you may wish to grant all abilities to a specific user. For this situation, use the `before` method to define a callback that is run before all other authorization checks:
+
+    $gate->before(function ($user, $ability) {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+    });
+
+If the `before` callback returns a non-null result that result will be considered the result of the check.
+
+You may use the `after` method to define a callback to be executed after every authorization check. However, you may not modify the result of the authorization check from an `after` callback:
+
+    $gate->after(function ($user, $ability, $result, $arguments) {
+        //
+    });
 
 <a name="checking-abilities"></a>
 ## Checking Abilities
@@ -181,7 +201,7 @@ You may also combine the `@can` directive with `@else` directive:
 <a name="within-form-requests"></a>
 ### Within Form Requests
 
-You may also choose to utilize your `Gate` defined abilities from a [form request's](/docs/{{version}}/validation#form-request-validation) `authorize` method. For example, you may simply defer to the `Gate` within the form request's `authorize` method:
+You may also choose to utilize your `Gate` defined abilities from a [form request's](/docs/{{version}}/validation#form-request-validation) `authorize` method. For example:
 
     /**
      * Determine if the user is authorized to make this request.
@@ -217,7 +237,6 @@ Once the policy exists, we need to register it with the `Gate` class. The `AuthS
 
 	use App\Post;
 	use App\Policies\PostPolicy;
-	use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 	use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 	class AuthServiceProvider extends ServiceProvider
@@ -230,6 +249,17 @@ Once the policy exists, we need to register it with the `Gate` class. The `AuthS
 	    protected $policies = [
 	        Post::class => PostPolicy::class,
 	    ];
+
+	    /**
+	     * Register any application authentication / authorization services.
+	     *
+	     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
+	     * @return void
+	     */
+	    public function boot(GateContract $gate)
+	    {
+	        $this->registerPolicies($gate);
+	    }
 	}
 
 <a name="writing-policies"></a>
@@ -262,6 +292,19 @@ Once the policy has been generated and registered, we can add methods for each a
 You may continue to define additional methods on the policy as needed for the various abilities it authorizes. For example, you might define `show`, `destroy`, or `addComment` methods to authorize various `Post` actions.
 
 > **Note:** All policies are resolved via the Laravel [service container](/docs/{{version}}/container), meaning you may type-hint any needed dependencies in the policy's constructor and they will be automatically injected.
+
+#### Intercepting All Checks
+
+Sometimes, you may wish to grant all abilities to a specific user on a policy. For this situation, define a `before` method on the policy. This method will be run before all other authorization checks on the policy:
+
+    public function before($user, $ability)
+    {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+    }
+
+If the `before` method returns a non-null result that result will be considered the result of the check.
 
 <a name="checking-policies"></a>
 ### Checking Policies
@@ -361,7 +404,7 @@ The `authorize` method shares the same signature as the various other authorizat
         }
     }
 
-If the action is authorized, the controller will continue executing normally; however, if the `authorize` method determines that the action is not authorized, a `HttpException` will automatically be thrown which generates a HTTP response with a `403 Not Authorized` status code. As you can see, the `authorize` method is a convenient, fast way to authorize an action or throw an exception with a single linde of code.
+If the action is authorized, the controller will continue executing normally; however, if the `authorize` method determines that the action is not authorized, a `HttpException` will automatically be thrown which generates a HTTP response with a `403 Not Authorized` status code. As you can see, the `authorize` method is a convenient, fast way to authorize an action or throw an exception with a single line of code.
 
 The `AuthorizesRequests` trait also provides the `authorizeForUser` method to authorize an action on a user that is not the currently authenticated user:
 

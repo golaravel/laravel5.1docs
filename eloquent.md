@@ -117,6 +117,26 @@ Eloquent 假定每一个数据表中都存在一个命名为 `id` 的列作为�
         protected $dateFormat = 'U';
     }
 
+#### Database Connection
+
+By default, all Eloquent models will use the default database connection configured for your application. If you would like to specify a different connection for the model, use the `$connection` property:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Flight extends Model
+    {
+        /**
+         * The connection name for the model.
+         *
+         * @var string
+         */
+        protected $connection = 'connection-name';
+    }
+
 <a name="retrieving-multiple-models"></a>
 ## 获取多个模型
 
@@ -413,6 +433,24 @@ The `withTrashed` method may also be used on a [relationship](/docs/{{version}}/
 
     $flight->history()->withTrashed()->get();
 
+#### Where Clause Caveats
+
+When adding `orWhere` clauses to your queries on soft deleted models, always use [advance where clauses](http://laravel.com/docs/5.1/queries#advanced-where-clauses) to logically group the `WHERE` clauses. For example:
+
+    User::where(function($query) {
+            $query->where('name', '=', 'John')
+                  ->orWhere('votes', '>', 100);
+            })
+            ->get();
+
+This will produce the following SQL:
+
+    select * from `users` where `users`.`deleted_at` is null and (`name` = 'John' or `votes` > 100)
+
+If the `orWhere` clause is not grouped, it will produce the following SQL which will contain soft deleted records:
+
+    select * from `users` where `users`.`deleted_at` is null and `name` = 'John' or `votes` > 100
+
 #### Retrieving Only Soft Deleted Models
 
 The `onlyTrashed` method will retrieve **only** soft deleted models:
@@ -450,7 +488,9 @@ Sometimes you may need to truly remove a model from your database. To permanentl
 <a name="query-scopes"></a>
 ## Query Scopes
 
-Scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, simply prefix an Eloquent model method with `scope`:
+Scopes allow you to define common sets of constraints that you may easily re-use throughout your application. For example, you may need to frequently retrieve all users that are considered "popular". To define a scope, simply prefix an Eloquent model method with `scope`.
+
+Scopes should always return a query builder instance:
 
     <?php
 
