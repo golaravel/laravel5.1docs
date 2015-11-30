@@ -1,15 +1,15 @@
-# Database: Getting Started
+# 数据库使用入门
 
-- [Introduction](#introduction)
-- [Running Raw SQL Queries](#running-queries)
-    - [Listening For Query Events](#listening-for-query-events)
-- [Database Transactions](#database-transactions)
-- [Using Multiple Database Connections](#accessing-connections)
+- [介绍](#introduction)
+- [执行原生 SQL 语句](#running-queries)
+    - [监听查找事件](#listening-for-query-events)
+- [数据库事务](#database-transactions)
+- [使用多个数据库连接](#accessing-connections)
 
 <a name="introduction"></a>
-## Introduction
+## 介绍
 
-Laravel makes connecting with databases and running queries extremely simple across a variety of database back-ends using either raw SQL, the [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel supports four database systems:
+Laravel 让连接数据库和执行SQL语句变得相当简单。它支持原生SQL语句，[fluent query 生成器](/docs/{{version}}/queries), 和 [Eloquent ORM](/docs/{{version}}/eloquent)。 当前 Laravel 支持以下4种数据库系统：
 
 - MySQL
 - Postgres
@@ -17,18 +17,18 @@ Laravel makes connecting with databases and running queries extremely simple acr
 - SQL Server
 
 <a name="configuration"></a>
-### Configuration
+### 配置
 
-Laravel makes connecting with databases and running queries extremely simple. The database configuration for your application is located at `config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for all of the supported database systems are provided in this file.
+Laravel 让链接数据库和执行SQL语句变的很简单。数据库的相关配置存放在 `config/database.php` 中。你可以定义所有的数据库连接，以及指定默认的连接。在该文件中你能找到所有支持的数据库的连接示例。
 
-By default, Laravel's sample [environment configuration](/docs/{{version}}/installation#environment-configuration) is ready to use with [Laravel Homestead](/docs/{{version}}/homestead), which is a convenient virtual machine for doing Laravel development on your local machine. Of course, you are free to modify this configuration as needed for your local database.
+默认情况下 Laravel 的范例数据库 [environment configuration](/docs/{{version}}/installation#environment-configuration) 在 [Laravel Homestead](/docs/{{version}}/homestead) 下可以直接使用。[Laravel Homestead](/docs/{{version}}/homestead) 是一个便捷的用于在本地机器上进行 Laravel开发的虚拟环境。当然，你可以根据需要修改本地的数据库配置。
 
 <a name="read-write-connections"></a>
-#### Read / Write Connections
+#### 读取 / 写入 连接
 
-Sometimes you may wish to use one database connection for SELECT statements, and another for INSERT, UPDATE, and DELETE statements. Laravel makes this a breeze, and the proper connections will always be used whether you are using raw queries, the query builder, or the Eloquent ORM.
+有时你希望将一个连接用于 SELECT 操作，另一个连接用于 INSERT, UPDATE, DELETE 操作。 Laravel让这些变得很简单，并且确保不管你是用原生query, query 生成器 或是 Eloquent ORM时都是使用正确的连接。
 
-To see how read / write connections should be configured, let's look at this example:
+让我们通过下面这个例子来看看如何配置读取/写入连接：
 
     'mysql' => [
         'read' => [
@@ -46,18 +46,18 @@ To see how read / write connections should be configured, let's look at this exa
         'prefix'    => '',
     ],
 
-Note that two keys have been added to the configuration array: `read` and `write`. Both of these keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array.
+注意我们在配置数组中添加了两个键值对： `read` 和 `write`。它们都有一个值为以`host`为键的数组。关于`read` 和 `write` 的其余的数据库配置项则合并在 `mysql` 数组中
 
-So, we only need to place items in the `read` and `write` arrays if we wish to override the values in the main array. So, in this case, `192.168.1.1` will be used as the "read" connection, while `192.168.1.2` will be used as the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections.
+所以我们只需要将想要覆写的选项加入到 `read` 和 `write` 数组中。在这个例子中，`192.168.1.1` 将被用于“读取”连接，同时 `192.168.1.2`被用于“写入”连接。数据库的其它配置比如密码，前缀，字符编码等则共用 `mysql` 数组中的配置。
 
 <a name="running-queries"></a>
-## Running Raw SQL Queries
+## 运行原生SQL语句
 
-Once you have configured your database connection, you may run queries using the `DB` facade. The `DB` facade provides methods for each type of query: `select`, `update`, `insert`, `delete`, and `statement`.
+当你把数据库连接配置好，就可以使用 `DB` facade 执行语句了。`DB` facade 为不同类型 `select`, `update`, `insert`, `delete`, and `statement` 的语句提供了多种方法。
 
-#### Running A Select Query
+#### 执行 Select 查找
 
-To run a basic query, we can use the `select` method on the `DB` facade:
+你可以通过 `DB` facade 中 `select` 方法执行一个简单的查询：
 
     <?php
 
@@ -81,48 +81,48 @@ To run a basic query, we can use the `select` method on the `DB` facade:
         }
     }
 
-The first argument passed to the `select` method is the raw SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the `where` clause constraints. Parameter binding provides protection against SQL injection.
+原生的SQL语句被当做第一个参数传给 `select` 方法，同时第二个参数为语句中绑定的参数。通常它们都是 `where` 从句中进行限制的值。参数绑定防止了SQL注入攻击。
 
-The `select` method will always return an `array` of results. Each result within the array will be a PHP `StdClass` object, allowing you to access the values of the results:
+`select`方法的返回值一直是数组。数组中的各个结果为一个PHP `StdClass` 对象，你可以通过它来访问结果的值：
 
     foreach ($users as $user) {
         echo $user->name;
     }
 
-#### Using Named Bindings
+#### 使用名字绑定
 
-Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:
+相比于使用 `?` 来进行参数绑定，你可以使用名字绑定来执行一个语句：
 
     $results = DB::select('select * from users where id = :id', ['id' => 1]);
 
-#### Running An Insert Statement
+#### 执行 Insert 插入语句
 
-To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method takes the raw SQL query as its first argument, and bindings as the second argument:
+你可以使用 `DB` facade中的`insert` 方法来执行 `insert` 插入语句。和 `select` 类似，该方法以原生SQL语句为第一个参数，绑定数组为第二个参数：
 
     DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
 
-#### Running An Update Statement
+#### 执行 Update 语句
 
-The `update` method should be used to update existing records in the database. The number of rows affected by the statement will be returned by the method:
+`update`方法应用于更新数据库中已存在的纪录。该方法返回被更新的纪录的个数：
 
     $affected = DB::update('update users set votes = 100 where name = ?', ['John']);
 
-#### Running A Delete Statement
+#### 执行 Delete 语句
 
-The `delete` method should be used to delete records from the database. Like `update`, the number of rows deleted will be returned:
+`delete`方法应用于从数据库中删除记录，和`update`一样，该方法将被删除的纪录的个数作为返回值：
 
     $deleted = DB::delete('delete from users');
 
-#### Running A General Statement
+#### 执行一般语句
 
-Some database statements should not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
+有些数据库语句没有任何返回值。对于这样的操作，你可以使用 `DB` facade 中的 `statement` 方法：
 
     DB::statement('drop table users');
 
 <a name="listening-for-query-events"></a>
-### Listening For Query Events
+### 监听查找事件
 
-If you would like to receive each SQL query executed by your application, you may use the `listen` method. This method is useful for logging queries or debugging. You may register your query listener in a [service provider](/docs/{{version}}/providers):
+如果你想获得所有执行了的SQL语句，你可以使用 `listen` 方法。该方法对于纪录日志和调试很有用。你可以在 [service provider](/docs/{{version}}/providers) 中注册你的query监听器：
 
     <?php
 
@@ -157,9 +157,9 @@ If you would like to receive each SQL query executed by your application, you ma
     }
 
 <a name="database-transactions"></a>
-## Database Transactions
+## 数据库事务
 
-To run a set of operations within a database transaction, you may use the `transaction` method on the `DB` facade. If an exception is thrown within the transaction `Closure`, the transaction will automatically be rolled back. If the `Closure` executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method:
+你可以使用 `DB` facade 中的 `transaction` 方法来执行一个数据库事务中的一组操作。如果事务 `闭包` 抛出任何异常，事务将会自动回滚。若 `闭包` 执行成功，该事务将自动被提交。当使用 `transaction` 方法时，你无需手动回滚或是手动提交：
 
     DB::transaction(function () {
         DB::table('users')->update(['votes' => 1]);
@@ -167,29 +167,29 @@ To run a set of operations within a database transaction, you may use the `trans
         DB::table('posts')->delete();
     });
 
-#### Manually Using Transactions
+#### 手动执行事务
 
-If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the `beginTransaction` method on the `DB` facade:
+如果你希望手动开始一个事务并且对于回滚和提交拥有完全的控制，你可以使用 `DB` facade中的 `beginTransaction` 方法：
 
     DB::beginTransaction();
 
-You can rollback the transaction via the `rollBack` method:
+你可以通过 `rollBack` 方法进行回滚：
 
     DB::rollBack();
 
-Lastly, you can commit a transaction via the `commit` method:
+最后，你可以通过 `commit` 方法提交事务：
 
     DB::commit();
 
-> **Note:** Using the `DB` facade's transaction methods also controls transactions for the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+> **注意:** 使用 `DB` facade 的 transaction 方法同样可以控制 [query 生成器](/docs/{{version}}/queries) 和 [Eloquent ORM](/docs/{{version}}/eloquent)。
 
 <a name="accessing-connections"></a>
-## Using Multiple Database Connections
+## 使用多个数据库连接
 
-When using multiple connections, you may access each connection via the `connection` method on the `DB` facade. The `name` passed to the `connection` method should correspond to one of the connections listed in your `config/database.php` configuration file:
+当有多个数据库连接时，你可以通过 `DB` facade的 `connection` 方法取得各个连接。传给 `connection` 方法的 `name` 参数需要和配置文件 `config/database.php` 中的某个连接对应：
 
     $users = DB::connection('foo')->select(...);
 
-You may also access the raw, underlying PDO instance using the `getPdo` method on a connection instance:
+你也可以通过连接实例的 `getPdo` 方法来获取基础的 PDO 实例：
 
     $pdo = DB::connection()->getPdo();
