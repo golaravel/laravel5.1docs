@@ -1,22 +1,22 @@
 # Facades
 
-- [Introduction](#introduction)
-- [Using Facades](#using-facades)
-- [Facade Class Reference](#facade-class-reference)
+- [介绍](#introduction)
+- [使用 Facades](#using-facades)
+- [Facade 类参考](#facade-class-reference)
 
 <a name="introduction"></a>
-## Introduction
+## 介绍
 
-Facades provide a "static" interface to classes that are available in the application's [service container](/docs/{{version}}/container). Laravel ships with many facades, and you have probably been using them without even knowing it! Laravel "facades" serve as "static proxies" to underlying classes in the service container, providing the benefit of a terse, expressive syntax while maintaining more testability and flexibility than traditional static methods.
+Facades 提供了一种“静态”接口来获得[服务容器](/docs/{{version}}/container)中可用的类。Laravel 提供多种 Facades，你很有可能在还不知道它的情况下已经在使用它们了！Laravel 的 "facades" 作为服务容器中基础类的静态代理，具有简洁，意图明确的语法，同时比传统的静态方法更具易测性和灵活性。
 
 <a name="using-facades"></a>
-## Using Facades
+## 使用 Facades
 
-In the context of a Laravel application, a facade is a class that provides access to an object from the container. The machinery that makes this work is in the `Facade` class. Laravel's facades, and any custom facades you create, will extend the base `Illuminate\Support\Facades\Facade` class.
+在 Laravel 应用程序的环境中，facade 是一个从容器中获取某个对象的类。`Facade` 让整个机制得以运转。Laravel 的 facades 以及任何你自定义的 facades，都都继承自基类 `Illuminate\Support\Facades\Facade`。
 
-A facade class only needs to implement a single method: `getFacadeAccessor`. It's the `getFacadeAccessor` method's job to define what to resolve from the container. The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to the resolved object.
+一个 facade 类只需要实现一个方法： `getFacadeAccessor`。 `getFacadeAccessor` 方法的任务就是定义在容器做什么解析。`Facade`的基类使用 `__callStatic()`魔术方法从你的 facade 中获得解析完成后的对象。
 
-In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static method `get` is being called on the `Cache` class:
+下面的例子中，我们对Laravel的缓存系统进行了一次调用。初看这段代码，有人可能认为 `Cache` 类调用了 `get` 静态方法：
 
     <?php
 
@@ -41,9 +41,9 @@ In the example below, a call is made to the Laravel cache system. By glancing at
         }
     }
 
-Notice that near the top of the file we are "importing" the `Cache` facade. This facade serves as a proxy to accessing the underlying implementation of the `Illuminate\Contracts\Cache\Factory` interface. Any calls we make using the facade will be passed to the underlying instance of Laravel's cache service.
+注意在靠近文件的顶部我们引入了 `Cache` facade。该 facade 作为一个获取 `Illuminate\Contracts\Cache\Factory` 的基础实现的代理。所有使用该 facade 的调用都会被传递给 Laravel 缓存服务的实例。
 
-If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that there is no static method `get`:
+我们来看一下 `Illuminate\Support\Facades\Cache` 类, 你会发现它并没有 `get` 静态方法:
 
     class Cache extends Facade
     {
@@ -55,12 +55,12 @@ If we look at that `Illuminate\Support\Facades\Cache` class, you'll see that the
         protected static function getFacadeAccessor() { return 'cache'; }
     }
 
-Instead, the `Cache` facade extends the base `Facade` class and defines the method `getFacadeAccessor()`. Remember, this method's job is to return the name of a service container binding. When a user references any static method on the `Cache` facade, Laravel resolves the `cache` binding from the [service container](/docs/{{version}}/container) and runs the requested method (in this case, `get`) against that object.
+相反地， `Cache` facade 继承了 `Facade` 基类并且定义了一个 `getFacadeAccessor()` 方法。请记住，该方法的任务只是返回一个服务容器的名字。每当用户引用任意 `Cache` facade的静态方法，Laravel将解析出 [服务容器](/docs/{{version}}/container) 中名为 `cache` 的绑定对象，并且在该实例中执行所请求的方法（在此例中为 `get`）。
 
 <a name="facade-class-reference"></a>
-## Facade Class Reference
+## Facade 类参考
 
-Below you will find every facade and its underlying class. This is a useful tool for quickly digging into the API documentation for a given facade root. The [service container binding](/docs/{{version}}/container) key is also included where applicable.
+你可以下面的表单中找到所有的 facade 以及它的基类。它对于快速深入了解某个facade的API文档很有用。它同时还包含了各个facade的[服务容器绑定](/docs/{{version}}/container)。
 
 Facade  |  Class  |  Service Container Binding
 ------------- | ------------- | -------------
