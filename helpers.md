@@ -26,6 +26,7 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 
 <div class="collection-method-list" markdown="1">
 [array_add](#method-array-add)
+[array_collapse](#method-array-collapse)
 [array_divide](#method-array-divide)
 [array_dot](#method-array-dot)
 [array_except](#method-array-except)
@@ -33,12 +34,13 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 [array_flatten](#method-array-flatten)
 [array_forget](#method-array-forget)
 [array_get](#method-array-get)
+[array_has](#method-array-has)
 [array_only](#method-array-only)
 [array_pluck](#method-array-pluck)
 [array_pull](#method-array-pull)
 [array_set](#method-array-set)
 [array_sort](#method-array-sort)
-[array_sort_recursive](#method-array-recursive)
+[array_sort_recursive](#method-array-sort-recursive)
 [array_where](#method-array-where)
 [head](#method-head)
 [last](#method-last)
@@ -94,6 +96,7 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 [auth](#method-auth)
 [back](#method-back)
 [bcrypt](#method-bcrypt)
+[collect](#method-collect)
 [config](#method-config)
 [csrf_field](#method-csrf-field)
 [csrf_token](#method-csrf-token)
@@ -104,7 +107,9 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 [method_field](#method-method-field)
 [old](#method-old)
 [redirect](#method-redirect)
+[request](#method-request)
 [response](#method-response)
+[session](#method-session)
 [value](#method-value)
 [view](#method-view)
 [with](#method-with)
@@ -135,6 +140,15 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 
     // ['name' => 'Desk', 'price' => 100]
 
+<a name="method-array-collapse"></a>
+#### `array_collapse()` {#collection-method}
+
+The `array_collapse` function collapse an array of arrays into a single array:
+
+    $array = array_collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+
+    // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
 <a name="method-array-divide"></a>
 #### `array_divide()` {#collection-method}
 
@@ -158,7 +172,7 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 <a name="method-array-except"></a>
 #### `array_except()` {#collection-method}
 
-`array_except` 方法从一个数组中移除指定的键-值对：
+`array_except` 方法从一个数组中移除指定的键/值对：
 
     $array = ['name' => 'Desk', 'price' => 100];
 
@@ -197,7 +211,7 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 <a name="method-array-forget"></a>
 #### `array_forget()` {#collection-method}
 
-`array_forget` 方法用点号从一个深度嵌套的数组中移除指定的键-值对：
+`array_forget` 方法基于点号路径从一个深度嵌套的数组中移除指定的键/值对：
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -208,7 +222,7 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 <a name="method-array-get"></a>
 #### `array_get()` {#collection-method}
 
-`array_get` 方法用点号从一个深度嵌套的数组中取出值：
+`array_get` 方法基于点号路径从一个深度嵌套的数组中取出值：
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -220,10 +234,21 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 
     $value = array_get($array, 'names.john', 'default');
 
+<a name="method-array-has"></a>
+#### `array_has()` {#collection-method}
+
+The `array_has` function checks that a given item exists in an array using "dot" notation:
+
+    $array = ['products' => ['desk' => ['price' => 100]]];
+
+    $hasDesk = array_has($array, ['products.desk']);
+
+    // true
+
 <a name="method-array-only"></a>
 #### `array_only()` {#collection-method}
 
-`array_only` 方法从给定的数组中返回指定的键-值对：
+`array_only` 方法从给定的数组中返回指定的键/值对：
 
     $array = ['name' => 'Desk', 'price' => 100, 'orders' => 10];
 
@@ -234,21 +259,27 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 <a name="method-array-pluck"></a>
 #### `array_pluck()` {#collection-method}
 
-`array_pluck` 方法从给定的数组中拉出键-值对：
+`array_pluck` 方法从给定的数组中提取出键/值对：
 
     $array = [
-        ['developer' => ['name' => 'Taylor']],
-        ['developer' => ['name' => 'Abigail']]
+        ['developer' => ['id' => 1, 'name' => 'Taylor']],
+        ['developer' => ['id' => 2, 'name' => 'Abigail']],
     ];
 
     $array = array_pluck($array, 'developer.name');
 
     // ['Taylor', 'Abigail'];
+    
+You may also specify how you wish the resulting list to be keyed:
+
+    $array = array_pluck($array, 'developer.name', 'developer.id');
+
+    // [1 => 'Taylor', 2 => 'Abigail'];
 
 <a name="method-array-pull"></a>
 #### `array_pull()` {#collection-method}
 
-`array_pull` 方法从数组中移除并返回一个键-值对：
+`array_pull` 方法从数组中移除并返回一个键/值对：
 
     $array = ['name' => 'Desk', 'price' => 100];
 
@@ -261,7 +292,7 @@ Laravel包含许多PHP辅助函数。框架自身使用了许多这些函数；�
 <a name="method-array-set"></a>
 #### `array_set()` {#collection-method}
 
-`array_set` 方法用点号为一个深度嵌套的数组设置值：
+`array_set` 方法基于点号路径为一个深度嵌套的数组设置值：
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
@@ -536,6 +567,16 @@ function returns the fully qualified path to the `storage` directory:
 
     // children
 
+You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
+
+    $plural = str_plural('child', 2);
+
+    // children
+
+    $plural = str_plural('child', 1);
+
+    // child
+
 <a name="method-str-random"></a>
 #### `str_random()` {#collection-method}
 
@@ -639,7 +680,7 @@ Generate a URL for an asset using HTTPS:
 <a name="method-auth"></a>
 #### `auth()` {#collection-method}
 
-`auth` 函数返回一个认正器实例。可用来简化使用 `Auth` 门面：
+`auth` 函数返回一个认正器实例。可用来简化使用 `Auth` facade：
 
     $user = auth()->user();
 
@@ -650,12 +691,19 @@ Generate a URL for an asset using HTTPS:
 
     return back();
 
-<a href="method-bcrypt"></a>
+<a name="method-bcrypt"></a>
 #### `bcrypt()` {#collection-method}
 
 `bcrypt` 函数使用Bcrypt计算给定值的哈希值。可用来替换使用 `Hash` 门面：
 
     $password = bcrypt('my-secret-password');
+
+<a name="method-collect"></a>
+#### `collect()` {#collection-method}
+
+The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the supplied items:
+
+    $collection = collect(['taylor', 'abigail']);
 
 <a name="method-config"></a>
 #### `config()` {#collection-method}
@@ -738,6 +786,15 @@ The `config` helper may also be used to set configuration variables at runtime b
 
     return redirect('/home');
 
+<a name="method-request"></a>
+#### `request()` {#collection-method}
+
+The `request` function returns the current [request](/docs/{{version}}/requests) instance or obtains an input item:
+
+    $request = request();
+
+    $value = request('key', $default = null)
+
 <a name="method-response"></a>
 #### `response()` {#collection-method}
 
@@ -746,6 +803,23 @@ The `config` helper may also be used to set configuration variables at runtime b
     return response('Hello World', 200, $headers);
 
     return response()->json(['foo' => 'bar'], 200, $headers);
+
+<a name="method-session"></a>
+#### `session()` {#collection-method}
+
+The `session` function may be used to get / set a session value:
+
+    $value = session('key');
+
+You may set values by passing an array of key / value pairs to the function:
+
+    session(['chairs' => 7, 'instruments' => 3]);
+
+The session store will be returned if no value is passed to the function:
+
+    $value = session()->get('key');
+
+    session()->put('key', $value);
 
 <a name="method-value"></a>
 #### `value()` {#collection-method}

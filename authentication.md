@@ -20,6 +20,7 @@
     - [After Resetting Passwords](#after-resetting-passwords)
 - [Social Authentication](#social-authentication)
 - [Adding Custom Authentication Drivers](#adding-custom-authentication-drivers)
+- [Events](#events)
 
 <a name="introduction"></a>
 ## Introduction
@@ -409,6 +410,14 @@ You will need to provide an HTML view for the password reset request form. This 
     <form method="POST" action="/password/email">
         {!! csrf_field() !!}
 
+        @if (count($errors) > 0)
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
+
         <div>
             Email
             <input type="email" name="email" value="{{ old('email') }}">
@@ -438,6 +447,14 @@ Here is a sample password reset form to get you started:
     <form method="POST" action="/password/reset">
         {!! csrf_field() !!}
         <input type="hidden" name="token" value="{{ $token }}">
+
+        @if (count($errors) > 0)
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
 
         <div>
             Email
@@ -546,8 +563,8 @@ The `redirect` method takes care of sending the user to the OAuth provider, whil
 
 Of course, you will need to define routes to your controller methods:
 
-        Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
-        Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
+    Route::get('auth/github', 'Auth\AuthController@redirectToProvider');
+    Route::get('auth/github/callback', 'Auth\AuthController@handleProviderCallback');
 
 A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
 
@@ -664,3 +681,34 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
     }
 
 This interface is simple. The `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
+
+<a name="events"></a>
+## Events
+
+Laravel raises a variety of [events](/docs/{{version}}/events) during the authentication process. You may attach listeners to these events in your `EventServiceProvider`:
+
+    /**
+     * Register any other events for your application.
+     *
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @return void
+     */
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
+
+        // Fired on each authentication attempt...
+        $events->listen('auth.attempt', function ($credentials, $remember, $login) {
+            //
+        });
+
+        // Fired on successful logins...
+        $events->listen('auth.login', function ($user, $remember) {
+            //
+        });
+
+        // Fired on logouts...
+        $events->listen('auth.logout', function ($user) {
+            //
+        });
+    }

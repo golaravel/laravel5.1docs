@@ -47,7 +47,7 @@ Laravel 利用 [Composer](http://getcomposer.org)（[Composer 中文](http://www
 
 首先，使用 Composer 下载 Laravel 安装包：
 
-    composer global require "laravel/installer=~1.1"
+    composer global require "laravel/installer"
 
 请确保 `PATH` 环境变量已经添加了 `~/.composer/vendor/bin` 目录，这样，可执行文件 `laravel` 就能被你的系统检测到了。
 

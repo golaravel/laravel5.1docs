@@ -189,6 +189,12 @@ You may remove items from the cache using the `forget` method on the `Cache` fac
 
     Cache::forget('key');
 
+You may clear the entire cache using the `flush` method:
+
+    Cache::flush();
+
+Flushing the cache **does not** respect the cache prefix and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
+
 <a name="adding-custom-cache-drivers"></a>
 ## Adding Custom Cache Drivers
 
@@ -297,7 +303,7 @@ In contrast, this statement would remove only caches tagged with `authors`, so `
 <a name="cache-events"></a>
 ## Cache Events
 
-To execute code on every cache operation, you may listen for the events fired by the cache. Typically, you would place these event handlers within the `boot` method of your `EventServiceProvider`:
+To execute code on every cache operation, you may listen for the [events](/docs/{{version}}/events) fired by the cache. Typically, you should place these event listeners within the `boot` method of your `EventServiceProvider`:
 
     /**
      * Register any other events for your application.

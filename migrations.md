@@ -122,7 +122,7 @@ The `migrate:refresh` command will first roll back all of your database migratio
 
 To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments. The first is the name of the table, while the second is a `Closure` which receives a `Blueprint` object used to define the new table:
 
-    Schema::create('users', function ($table) {
+    Schema::create('users', function (Blueprint $table) {
         $table->increments('id');
     });
 
@@ -214,6 +214,7 @@ Command  | Description
 `$table->tinyInteger('numbers');`  |  TINYINT equivalent for the database.
 `$table->timestamp('added_on');`  |  TIMESTAMP equivalent for the database.
 `$table->timestamps();`  |  Adds `created_at` and `updated_at` columns.
+`$table->uuid('id');`  |  UUID equivalent for the database.
 
 #### Column Modifiers
 
@@ -282,6 +283,8 @@ You may drop multiple columns from a table by passing an array of column names t
     });
 
 > **Note:** Before dropping columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library.
+
+> **Note:** Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
 
 <a name="creating-indexes"></a>
 ### Creating Indexes
